@@ -25,6 +25,41 @@ class User(db.Model):
         }
 
 
+class Ticket(db.Model):
+    """
+    Support ticket class.
+    """
+
+    __tablename__ = "tickets"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    client_name = db.Column(db.String(120), nullable=False)
+    client_email = db.Column(db.String(200), nullable=False)
+    description = db.Column(db.String(1800), nullable=False)
+    status = db.relationship('Status', backref='tickets', nullable=False)
+
+    def to_dict(self):
+        """Serializer ticket to dict"""
+
+        return {
+            "id": self.id,
+            "clientName": self.client_name,
+            "clientEmail": self.client_email,
+            "description": self.description,
+            "status": self.status,
+        }
+
+
+class Status(db.Model):
+    """
+    Status class for Tickets
+    """
+
+    __tablename__ = "statuses"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    status = db.Column(db.String(120), nullable=False, unique=True)
+
+
 def connect_db(app):
     """
     Connect Flask app to the database.
