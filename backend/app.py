@@ -1,10 +1,12 @@
 import os
+from dotenv import load_dotenv
 from flask import (
     Flask,
     request,
     g,
     jsonify,
 )
+from flask_cors import CORS
 from werkzeug.datastructures import MultiDict
 from sqlalchemy.exc import IntegrityError
 
@@ -12,6 +14,11 @@ from models import db, connect_db, Ticket
 from forms import TicketSubmit
 
 app = Flask(__name__)
+
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
+
+load_dotenv()
 
 app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
 app.config['SQLALCHEMY_DATABASE_URI'] = (
