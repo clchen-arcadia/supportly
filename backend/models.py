@@ -4,6 +4,8 @@ from flask_bcrypt import Bcrypt
 db = SQLAlchemy()
 bcrypt = Bcrypt()
 
+TICKET_INITIAL_STATUS = 1
+
 
 class User(db.Model):
     """
@@ -48,6 +50,18 @@ class Ticket(db.Model):
             "description": self.description,
             "status": self.status,
         }
+
+    @classmethod
+    def create_new_ticket(cls, client_name, client_email, description):
+        ticket = Ticket(
+            client_name=client_name,
+            client_email=client_email,
+            description=description,
+            status=TICKET_INITIAL_STATUS,
+        )
+
+        db.session.add(ticket)
+        return ticket
 
 
 class Status(db.Model):
