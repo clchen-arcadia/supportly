@@ -38,7 +38,7 @@ class Ticket(db.Model):
     client_name = db.Column(db.String(120), nullable=False)
     client_email = db.Column(db.String(200), nullable=False)
     description = db.Column(db.String(1800), nullable=False)
-    status = db.relationship('Status', backref='tickets', nullable=False)
+    status = db.relationship('Status', backref='tickets')
 
     def to_dict(self):
         """Serializer ticket to dict"""
