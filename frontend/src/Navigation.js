@@ -11,14 +11,23 @@ function Navigation({ handleLogout }) {
   // const isAdmin = data?.isAdmin === true;
 
   return (
-    <nav>
-      <Box>
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+      }}
+    >
+      <Box
+        m={2}
+      >
         <Link to="/">Supportly</Link>
       </Box>
       {
         isLoggedIn
           ?
-          <Box>
+          <Box
+            m={2}
+          >
             <NavLink
               to="/logout"
               onClick={handleLogout}
@@ -27,12 +36,23 @@ function Navigation({ handleLogout }) {
             </NavLink>
           </Box>
           :
-          <Box>
-            <NavLink to="/login">Login</NavLink>
-            <NavLink to="/signup">Signup</NavLink>
+          <Box
+            m={2}
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+            }}
+
+          >
+            <Box mx={2}>
+              <NavLink to="/login">Login</NavLink>
+            </Box>
+            <Box mx={2}>
+              <NavLink to="/signup">Signup</NavLink>
+            </Box>
           </Box>
       }
-    </nav>
+    </Box>
   );
 }
 
