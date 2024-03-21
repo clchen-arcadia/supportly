@@ -1,14 +1,60 @@
-// import './App.css';
+import { useState, useEffect } from 'react';
+import { BrowserRouter } from 'react-router-dom';
 
-import { Typography } from "@mui/material/";
+import { jwtDecode } from "jwt-decode";
 
-import LoginForm from "./components/LoginForm";
-import SignupForm from "./components/SignupForm";
-import TicketForm from "./components/TicketForm";
 import SupportlyApi from "./Api";
+import userContext from './userContext';
+import Navigation from './Navigation';
+import RoutesList from './RoutesList';
+import useLocalStorage from "./useLocalStorage";
+
+const TOKEN_STORAGE_KEY = "supportly-token";
 
 
 function App() {
+
+  const [currentUser, setCurrentUser] = useState({
+    data: null,
+    infoLoaded: false
+  });
+  const [token, setToken] = useLocalStorage(TOKEN_STORAGE_KEY);
+
+
+  useEffect(
+    function loadUserInfo() {
+      console.debug("App useEffect loadUserInfo", "token=", token);
+
+      async function getCurrentUser() {
+        if (token) {
+          try {
+            const { userId } = jwtDecode(token);
+            SupportlyApi.token = token;
+            const currentUser = await SupportlyApi.getCurrentUser(userId);
+            setCurrentUser({
+              infoLoaded: true,
+              data: currentUser
+            });
+          } catch (err) {
+            console.error("App loadUserInfo: problem loading", err);
+            setCurrentUser({
+              infoLoaded: true,
+              data: null
+            });
+          }
+        } else {
+          setCurrentUser({
+            infoLoaded: true,
+            data: null
+          });
+        }
+      }
+      getCurrentUser();
+    },
+    [token]
+  );
+
+
   async function handleNewTicket(ticketFormData) {
     const response = await SupportlyApi.submitTicket(ticketFormData);
     console.debug("response= ", response);
@@ -49,26 +95,18 @@ function App() {
 
 
   return (
-    <>
-      <nav>
-        test
-      </nav>
-      <Typography variant="h4">
-        Welcome to Supportly
-      </Typography>
+    <userContext.Provider value={currentUser}>
+      <BrowserRouter>
+        <Navigation
+          handleLogout={handleLogout}
+        />
 
-      <TicketForm
-        onSubmit={handleNewTicket}
-      />
-
-      <SignupForm
-        onSubmit={handleSignup}
-      />
-
-      <LoginForm
-        onSubmit={handleLogin}
-      />
-    </>
+        <RoutesList
+          handleLogin={handleLogin}
+          handleSignup={handleSignup}
+        />
+      </BrowserRouter>
+    </userContext.Provider>
   );
 }
 
