@@ -32,9 +32,11 @@ class User(db.Model):
     def signup(cls, email, password, is_admin=True):
         """
         Signup user.
+        Returns user token.
         """
 
-        hashed_password = bcrypt.generate_password_hash(password).decode('UTF-8')
+        hashed_password = bcrypt.generate_password_hash(password)\
+            .decode('UTF-8')
 
         user = User(
             email=email,
@@ -46,6 +48,22 @@ class User(db.Model):
         token = create_token(user)
 
         return token
+
+    @classmethod
+    def login(cls, email, password):
+        """
+        Login user.
+        Returns token on success. Returns False on bad email/password.
+        """
+
+        user = cls.query.filter_by(email=email).first()
+
+        if user:
+            is_auth = bcrypt.check_password_hash(user.password, password)
+            if is_auth:
+                return create_token(user)
+
+        return False
 
 
 class Ticket(db.Model):
