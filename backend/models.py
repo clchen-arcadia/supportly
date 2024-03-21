@@ -1,6 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 
+from token_helpers import create_token
+
 db = SQLAlchemy()
 bcrypt = Bcrypt()
 
@@ -25,6 +27,25 @@ class User(db.Model):
             "email": self.email,
             "isAdmin": self.is_admin,
         }
+
+    @classmethod
+    def signup(cls, email, password, is_admin=True):
+        """
+        Signup user.
+        """
+
+        hashed_password = bcrypt.generate_password_hash(password).decode('UTF-8')
+
+        user = User(
+            email=email,
+            password=hashed_password,
+            is_admin=is_admin,
+        )
+
+        db.session.add(user)
+        token = create_token(user)
+
+        return token
 
 
 class Ticket(db.Model):
