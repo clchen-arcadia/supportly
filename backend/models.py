@@ -4,7 +4,7 @@ from flask_bcrypt import Bcrypt
 db = SQLAlchemy()
 bcrypt = Bcrypt()
 
-TICKET_INITIAL_STATUS = 1
+TICKET_INITIAL_STATUS = 'new'
 
 
 class User(db.Model):
@@ -38,6 +38,8 @@ class Ticket(db.Model):
     client_name = db.Column(db.String(120), nullable=False)
     client_email = db.Column(db.String(200), nullable=False)
     description = db.Column(db.String(1800), nullable=False)
+    status_name = db.Column(db.Text, db.ForeignKey('statuses.status_name'))
+
     status = db.relationship('Status', backref='tickets')
 
     def to_dict(self):
@@ -57,7 +59,7 @@ class Ticket(db.Model):
             client_name=client_name,
             client_email=client_email,
             description=description,
-            status=TICKET_INITIAL_STATUS,
+            status_name=TICKET_INITIAL_STATUS,
         )
 
         db.session.add(ticket)
@@ -71,7 +73,7 @@ class Status(db.Model):
 
     __tablename__ = "statuses"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    status = db.Column(db.String(120), nullable=False, unique=True)
+    status_name = db.Column(db.String(120), nullable=False, unique=True)
 
 
 def connect_db(app):
