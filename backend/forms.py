@@ -11,12 +11,12 @@ from wtforms.validators import (
 class TicketSubmit(FlaskForm):
     """Form for creating a new ticket"""
 
-    client_name = StringField(
+    name = StringField(
         "Name",
         validators=[Length(max=120, min=5)],
     )
 
-    client_email = EmailField(
+    email = EmailField(
         "Email",
         validators=[Email(), Length(max=200, min=5)],
     )
