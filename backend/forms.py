@@ -4,8 +4,34 @@ from wtforms.validators import (
     Email,
     Length,
     InputRequired,
-    Optional,
 )
+
+
+class UserSignup(FlaskForm):
+    """Form to signup new user"""
+
+    email = EmailField(
+        "Email",
+        validators=[InputRequired()]
+    )
+
+    password = StringField(
+        "Password",
+        validators=[InputRequired(), Length(min=6)]
+    )
+
+    is_admin = BooleanField(
+        "Is Admin",
+        validators=[InputRequired()],
+        false_values=(False, 'false', '',)
+    )
+
+
+class UserLogin(FlaskForm):
+    """Form to login user"""
+
+    email = StringField('Email', validators=[InputRequired()])
+    password = PasswordField('Password', validators=[InputRequired()])
 
 
 class TicketSubmit(FlaskForm):
