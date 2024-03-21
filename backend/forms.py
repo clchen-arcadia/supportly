@@ -22,7 +22,6 @@ class UserSignup(FlaskForm):
 
     is_admin = BooleanField(
         "Is Admin",
-        validators=[InputRequired()],
         false_values=(False, 'false', '',)
     )
 
