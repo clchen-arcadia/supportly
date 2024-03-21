@@ -2,21 +2,18 @@
 class SupportlyApi {
 
   static token = localStorage.getItem("token");
-  static baseUrl = process.env.REACT_APP_BASE_URL || "http://localhost:5001";
+  static baseUrl = process.env.REACT_APP_BASE_URL || "http://localhost:5001/";
 
   static async fetchResponse(url, headers) {
     console.debug("API Call:", url, headers);
+    // debugger;
 
     try {
       const response = await fetch(url, headers);
-      if (response.status === 200) {
-        return [true, await response.json()];
-      } else {
-        return [false, await response.text()];
-      }
+      return response
     } catch (error) {
       console.error(error);
-      return [false, null];
+      throw error;
     }
   }
 
@@ -30,11 +27,14 @@ class SupportlyApi {
     return headers;
   }
 
-  static async submitTicket(data) {
+  static async submitTicket(ticketSubmitData) {
+    // debugger;
+
     return await this.fetchResponse(
       this.baseUrl + 'tickets/',
       {
         method: "POST",
+        body: JSON.stringify(ticketSubmitData),
         headers: this.getHeaders(false),
         cache: "no-cache",
       }
