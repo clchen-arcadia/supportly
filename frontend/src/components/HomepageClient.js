@@ -1,18 +1,29 @@
 import TicketForm from "./TicketForm";
-import { Typography } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 
 function HomepageClient({ handleNewTicket }) {
 
 
   return (
     <>
-      <Typography variant="h4">
+      <Typography
+        textAlign='center'
+        variant='h4'
+        sx={{ m: 2 }}
+      >
         Welcome to Supportly
       </Typography>
 
-      <TicketForm
-        onSubmit={handleNewTicket}
-      />
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
+        <TicketForm
+          onSubmit={handleNewTicket}
+        />
+      </Box>
     </>
   );
 }
