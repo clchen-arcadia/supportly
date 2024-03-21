@@ -24,7 +24,6 @@ function validateTicketForm(formData) {
 
 
 function TicketForm({ onSubmit }) {
-  // const [errorMessage, setErrorMessage] = useState('');
   const [formData, setFormData] = useState({
     name: '',
     email: '',
