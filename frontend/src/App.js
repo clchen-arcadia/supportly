@@ -7,8 +7,15 @@ import SupportlyApi from "./Api";
 
 
 function App() {
-  function onTicketFormSubmit(formData) {
-    console.log(`submitted ticket form with formData=`, formData);
+  async function onTicketFormSubmit(ticketFormData) {
+    // debugger;
+    const response = await SupportlyApi.submitTicket(ticketFormData);
+
+    if (response.ok) {
+      alert(`Success! Ticket created.`);
+    } else {
+      alert(`Failure! Problem creating ticket.`);
+    }
   }
 
 
