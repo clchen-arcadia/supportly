@@ -27,9 +27,31 @@ class SupportlyApi {
     return headers;
   }
 
-  static async submitTicket(ticketSubmitData) {
-    // debugger;
+  static async signupUser(signupFormData) {
+    return await this.fetchResponse(
+      this.baseUrl + 'signup/',
+      {
+        method: "POST",
+        body: JSON.stringify(signupFormData),
+        headers: this.getHeaders(false),
+        cache: "no-cache",
+      }
+    );
+  }
 
+  static async loginUser(loginFormData) {
+    return await this.fetchResponse(
+      this.baseUrl + 'login/',
+      {
+        method: "POST",
+        body: JSON.stringify(loginFormData),
+        headers: this.getHeaders(false),
+        cache: "no-cache",
+      }
+    );
+  }
+
+  static async submitTicket(ticketSubmitData) {
     return await this.fetchResponse(
       this.baseUrl + 'tickets/',
       {
