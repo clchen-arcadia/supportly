@@ -6,12 +6,15 @@ from flask import (
     g,
     jsonify,
 )
+import jwt
 from flask_cors import CORS
 from werkzeug.datastructures import MultiDict
 from sqlalchemy.exc import IntegrityError
 
+from middleware import ensure_admin
 from models import db, connect_db, User, Ticket
 from forms import UserLogin, UserSignup, TicketSubmit
+
 
 app = Flask(__name__)
 
@@ -29,6 +32,30 @@ app.config['SQLALCHEMY_ECHO'] = False
 app.config['WTF_CSRF_ENABLED'] = False
 
 connect_db(app)
+
+
+@app.before_request
+def add_user_to_g():
+    """
+    If logged in, add current user to Flask global.
+    """
+
+    if 'token' in request.headers:
+        token = request.headers['token']
+        try:
+            payload = jwt.decode(
+                token,
+                app.config['SECRET_KEY'],
+                algorithms=['HS256'],
+                options={"verify_signature": True}
+            )
+            g.user = payload
+        except jwt.exceptions.InvalidSignatureError as e:
+            print("INVALID SIG, ERR IS", e)
+            g.user = None
+
+    else:
+        g.user = None
 
 
 @app.route('/signup/', methods=["POST"])
