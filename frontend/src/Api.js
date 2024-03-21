@@ -1,18 +1,30 @@
 
 class SupportlyApi {
 
-  static token = localStorage.getItem("token");
-  static baseUrl = process.env.REACT_APP_BASE_URL || "http://localhost:5001/";
+  static token = localStorage.getItem("supportly-token");
+  static baseUrl = process.env.REACT_APP_BASE_API_URL || "http://localhost:5001/";
 
-  static async fetchResponse(url, headers) {
-    console.debug("API Call:", url, headers);
+  static async fetchResponse(endpoint, method, body = {}) {
+    console.debug("API Call:", endpoint, method, body);
 
     try {
-      const response = await fetch(url, headers);
-      return response;
+      const response = await fetch(
+        this.baseUrl + endpoint,
+        {
+          method,
+          body,
+          headers: this.getHeaders(),
+          cache: "no-cache",
+        }
+      );
+      if (response.ok) {
+        return [true, response];
+      } else {
+        return [false, response];
+      }
     } catch (error) {
-      console.error(error);
-      throw error;
+      console.error("API ERROR: ", error);
+      return [false, "Server error"];
     }
   }
 
@@ -27,52 +39,42 @@ class SupportlyApi {
   }
 
   static async signupUser(signupFormData) {
-    return await this.fetchResponse(
-      this.baseUrl + 'signup/',
-      {
-        method: "POST",
-        body: JSON.stringify(signupFormData),
-        headers: this.getHeaders(false),
-        cache: "no-cache",
-      }
-    );
+    const [success, response] = await this.fetchResponse('signup/', 'POST', signupFormData);
+    if (success) {
+      return [true, response.token];
+    } else {
+      return [false, Array.isArray(response.errors) ? response.errors.join(' ') : response.errors];
+    }
   }
 
   static async loginUser(loginFormData) {
-    return await this.fetchResponse(
-      this.baseUrl + 'login/',
-      {
-        method: "POST",
-        body: JSON.stringify(loginFormData),
-        headers: this.getHeaders(false),
-        cache: "no-cache",
-      }
-    );
+    const [success, response] = await this.fetchResponse('login/', 'POST', loginFormData);
+    if (success) {
+      return [true, response.token];
+    } else {
+      return [false, Array.isArray(response.errors) ? response.errors.join(' ') : response.errors];
+    }
   }
 
   static async submitTicket(ticketSubmitData) {
-    return await this.fetchResponse(
-      this.baseUrl + 'tickets/',
-      {
-        method: "POST",
-        body: JSON.stringify(ticketSubmitData),
-        headers: this.getHeaders(false),
-        cache: "no-cache",
-      }
-    );
+    const [success, response] = await this.fetchResponse('tickets/', 'POST', ticketSubmitData);
+
+    if (success) {
+      return [true, response.message];
+    } else {
+      return [false, Array.isArray(response.errors) ? response.errors.join(' ') : response.errors];
+    }
+
   }
 
   static async getCurrentUser(id) {
-    const response = await this.fetchResponse(
-      this.baseUrl + `users/${id}/`,
-      {
-        method: "GET",
-        headers: this.getHeaders(),
-        cache: "no-cache",
-      }
-    );
+    const [success, response] = await this.fetchResponse(`users/${id}`, 'GET');
 
-    return response.user;
+    if (success) {
+      return [true, response.user];
+    } else {
+      return [false, Array.isArray(response.errors) ? response.errors.join(' ') : response.errors];
+    }
   }
 }
 
