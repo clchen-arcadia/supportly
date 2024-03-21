@@ -10,30 +10,28 @@ from wtforms.validators import (
 class UserSignup(FlaskForm):
     """Form to signup new user"""
 
-    email = EmailField(
-        "Email",
-        validators=[InputRequired()]
-    )
+    email = EmailField("Email", validators=[InputRequired(), Email()])
 
-    password = StringField(
-        "Password",
-        validators=[InputRequired(), Length(min=6)]
-    )
+    password = StringField("Password", validators=[InputRequired(), Length(min=6)])
 
     is_admin = BooleanField(
         "Is Admin",
-        false_values=(False, 'false', '',)
+        false_values=(
+            False,
+            "false",
+            "",
+        ),
     )
 
 
 class UserLogin(FlaskForm):
     """Form to login user"""
 
-    email = StringField('Email', validators=[InputRequired()])
-    password = PasswordField('Password', validators=[InputRequired()])
+    email = StringField("Email", validators=[InputRequired(), Email()])
+    password = PasswordField("Password", validators=[InputRequired()])
 
 
-class TicketSubmit(FlaskForm):
+class TicketNewForm(FlaskForm):
     """Form for creating a new ticket"""
 
     name = StringField(
@@ -49,4 +47,13 @@ class TicketSubmit(FlaskForm):
     description = StringField(
         "Description",
         validators=[Length(max=1800, min=5)],
+    )
+
+
+class TicketStatusPatchForm(FlaskForm):
+    """Form for creating a new ticket"""
+
+    new_status = StringField(
+        "Name",
+        validators=[Length(max=20, min=2)],
     )
