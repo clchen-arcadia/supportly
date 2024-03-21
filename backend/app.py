@@ -10,8 +10,8 @@ from flask_cors import CORS
 from werkzeug.datastructures import MultiDict
 from sqlalchemy.exc import IntegrityError
 
-from models import db, connect_db, Ticket
-from forms import TicketSubmit
+from models import db, connect_db, User, Ticket
+from forms import UserLogin, UserSignup, TicketSubmit
 
 app = Flask(__name__)
 
@@ -29,6 +29,62 @@ app.config['SQLALCHEMY_ECHO'] = False
 app.config['WTF_CSRF_ENABLED'] = False
 
 connect_db(app)
+
+
+@app.route('/signup/', methods=["POST"])
+def signup():
+    """
+    Handle user signup
+    """
+    
+    data = MultiDict(mapping=request.json)
+    form = UserSignup(data)
+
+    if form.validate():
+
+        email = form.data["email"]
+        password = form.data["password"]
+        is_admin = form.data["is_admin"]
+
+        try:
+            token = User.signup(email, password, is_admin)
+            db.session.commit()
+
+        except IntegrityError as e:
+            print("ERR: ", e)
+            return jsonify({'errors': "Email already exists."}), 400
+
+        return jsonify({"token": token}), 201
+
+    else:
+        messages = []
+        for err in form.errors:
+            joined_messages = " ".join(form.errors[err])
+            messages.append(f"{err}: {joined_messages}")
+        return jsonify({'errors': messages}), 400
+
+
+@app.route('/login/', methods=["POST"])
+def login():
+    """
+    Handle user login
+    """
+
+    data = MultiDict(mapping=request.json)
+    form = UserLogin(data)
+
+    if form.validate():
+        email = form.data["email"]
+        password = form.data["password"]
+
+        token = User.login(email, password)
+
+        if token:
+            return jsonify({'token': token}), 200
+        else:
+            return jsonify({'error': 'Invalid username/password'}), 400
+
+    return jsonify(errors=form.errors), 400
 
 
 @app.route('/tickets/', methods=["POST"])
