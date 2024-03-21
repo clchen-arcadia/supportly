@@ -12,8 +12,8 @@ from werkzeug.datastructures import MultiDict
 from sqlalchemy.exc import IntegrityError
 
 from middleware import ensure_admin, ensure_logged_in
-from models import db, connect_db, User, Ticket
-from forms import UserLogin, UserSignup, TicketSubmit
+from models import db, connect_db, User, Ticket, Status
+from forms import UserLogin, UserSignup, TicketNewForm, TicketStatusPatchForm
 
 
 app = Flask(__name__)
@@ -111,7 +111,12 @@ def login():
         else:
             return jsonify({"error": "Invalid username/password"}), 400
 
-    return jsonify(errors=form.errors), 400
+    else:
+        messages = []
+        for err in form.errors:
+            joined_messages = " ".join(form.errors[err])
+            messages.append(f"{err}: {joined_messages}")
+        return jsonify({"errors": messages}), 400
 
 
 @app.route("/users/<user_id>", methods=["GET"])
@@ -121,18 +126,19 @@ def get_user(user_id):
     Get user by id
     """
     user = User.query.get_or_404(user_id)
-    return jsonify({'user': user.to_dict()}), 200
+    return jsonify({"user": user.to_dict()}), 200
 
 
 @app.route("/tickets/", methods=["GET"])
 @ensure_admin
 def get_all_tickets():
     """
-    Get all tickets
+    Get all tickets.
+    Returns them by descending id number.
     """
 
     tickets = []
-    for ticket in Ticket.query.all():
+    for ticket in Ticket.query.order_by(Ticket.id.desc()).all():
         tickets.append(ticket.to_dict())
 
     return jsonify({"tickets": tickets}), 200
@@ -145,7 +151,7 @@ def new_ticket():
     """
 
     data = MultiDict(mapping=request.json)
-    form = TicketSubmit(data)
+    form = TicketNewForm(data)
 
     if form.validate():
         client_name = form.data["name"]
@@ -164,6 +170,43 @@ def new_ticket():
         except IntegrityError as e:
             return jsonify({"errors": e.__repr__()}), 400
 
-        return jsonify({"success": "New ticket submitted"}), 201
+        return jsonify({"message": "New ticket submitted"}), 201
 
     return jsonify(errors=form.errors), 400
+
+
+@app.route("/tickets/<ticket_id>", methods=["PATCH"])
+@ensure_admin
+def update_ticket_status(ticket_id):
+    """
+    Update ticket status
+    """
+
+    ticket = Ticket.query.get_or_404(ticket_id)
+
+    data = MultiDict(mapping=request.json)
+    form = TicketStatusPatchForm(data)
+
+    if form.validate():
+        new_status = form.data["new_status"]
+
+        status = Status.query.filter_by(status_name=new_status).first()
+
+        if not status:
+            return jsonify({"error": "No such status."}), 404
+
+        try:
+            ticket.status_name = status.status_name
+            db.session.commit()
+
+        except IntegrityError as e:
+            return jsonify({"errors": e.__repr__()}), 400
+
+        return jsonify({"message": "Successfully updated ticket"}), 200
+
+    else:
+        messages = []
+        for err in form.errors:
+            joined_messages = " ".join(form.errors[err])
+            messages.append(f"{err}: {joined_messages}")
+        return jsonify({"errors": messages}), 400
