@@ -114,6 +114,20 @@ def login():
     return jsonify(errors=form.errors), 400
 
 
+@app.route('/tickets/', methods=["GET"])
+@ensure_admin
+def get_all_tickets():
+    """
+    Get all tickets
+    """
+
+    tickets = []
+    for ticket in Ticket.query.all():
+        tickets.append(ticket.to_dict())
+
+    return jsonify({'tickets': tickets}), 200
+
+
 @app.route('/tickets/', methods=["POST"])
 def new_ticket():
     """
