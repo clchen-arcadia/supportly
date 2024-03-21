@@ -9,12 +9,14 @@ secret_key = os.getenv('SECRET_KEY')
 
 def create_token(user):
 
+    id = user.id
     email = user.email
     is_admin = user.is_admin
 
     payload = {
+        'userId': id,
         'email': email,
-        'is_admin': is_admin,
+        'isAdmin': is_admin,
     }
 
     token = jwt.encode(
