@@ -42,6 +42,11 @@ function App() {
     }
   }
 
+  function handleLogout() {
+    setToken(() => null);
+  }
+
+
 
   return (
     <>
