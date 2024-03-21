@@ -27,20 +27,21 @@ function App() {
 
       async function getCurrentUser() {
         if (token) {
-          try {
-            const { userId } = jwtDecode(token);
-            SupportlyApi.token = token;
-            const currentUser = await SupportlyApi.getCurrentUser(userId);
+
+          const { userId } = jwtDecode(token);
+          SupportlyApi.token = token;
+          const [success, currentUser] = await SupportlyApi.getCurrentUser(userId);
+          if (success) {
             setCurrentUser({
               infoLoaded: true,
               data: currentUser
             });
-          } catch (err) {
-            console.error("App loadUserInfo: problem loading", err);
+          } else {
             setCurrentUser({
               infoLoaded: true,
               data: null
             });
+            alert("Problem loading current user");
           }
         } else {
           setCurrentUser({
@@ -56,33 +57,30 @@ function App() {
 
 
   async function handleNewTicket(ticketFormData) {
-    const response = await SupportlyApi.submitTicket(ticketFormData);
-    console.debug("response= ", response);
+    const [success, message] = await SupportlyApi.submitTicket(ticketFormData);
 
-    if (response.ok) {
-      alert(`Success! Ticket created.`);
+    if (success) {
+      alert(`Success! ${message}`);
     } else {
-      alert(`Failure! Problem creating ticket.`);
+      alert(`Failure! ${message}`);
     }
   }
 
   async function handleSignup(signupFormData) {
-    const response = await SupportlyApi.signupUser(signupFormData);
-    console.debug("response= ", response);
+    const [success, data] = await SupportlyApi.signupUser(signupFormData);
 
-    if (response.ok) {
-      alert(`Successfully created user.`);
+    if (success) {
+      setToken(data);
     } else {
       alert(`Failed to create user.`);
     }
   }
 
   async function handleLogin(loginFormData) {
-    const response = await SupportlyApi.loginUser(loginFormData);
-    console.debug("response= ", response);
+    const [success, data] = await SupportlyApi.loginUser(loginFormData);
 
-    if (response.ok) {
-      alert(`Successfully logged in user.`);
+    if (success) {
+      setToken(data);
     } else {
       alert(`Failed to log in user.`);
     }
