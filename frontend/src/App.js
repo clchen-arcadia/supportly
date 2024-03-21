@@ -9,7 +9,7 @@ import SupportlyApi from "./Api";
 
 
 function App() {
-  async function onTicketFormSubmit(ticketFormData) {
+  async function handleNewTicket(ticketFormData) {
     const response = await SupportlyApi.submitTicket(ticketFormData);
     console.debug("response= ", response);
 
@@ -20,7 +20,7 @@ function App() {
     }
   }
 
-  async function onSignupFormSubmit(signupFormData) {
+  async function handleSignup(signupFormData) {
     const response = await SupportlyApi.signupUser(signupFormData);
     console.debug("response= ", response);
 
@@ -31,7 +31,7 @@ function App() {
     }
   }
 
-  async function onLoginFormSubmit(loginFormData) {
+  async function handleLogin(loginFormData) {
     const response = await SupportlyApi.loginUser(loginFormData);
     console.debug("response= ", response);
 
@@ -58,15 +58,15 @@ function App() {
       </Typography>
 
       <TicketForm
-        onSubmit={onTicketFormSubmit}
+        onSubmit={handleNewTicket}
       />
 
       <SignupForm
-        onSubmit={onSignupFormSubmit}
+        onSubmit={handleSignup}
       />
 
       <LoginForm
-        onSubmit={onLoginFormSubmit}
+        onSubmit={handleLogin}
       />
     </>
   );
