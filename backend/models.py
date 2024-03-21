@@ -6,7 +6,7 @@ from token_helpers import create_token
 db = SQLAlchemy()
 bcrypt = Bcrypt()
 
-TICKET_INITIAL_STATUS = 'new'
+TICKET_INITIAL_STATUS = "new"
 
 
 class User(db.Model):
@@ -16,7 +16,8 @@ class User(db.Model):
 
     __tablename__ = "users"
 
-    email = db.Column(db.Text, primary_key=True, unique=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    email = db.Column(db.Text, unique=True)
     password = db.Column(db.Text, nullable=False)
     is_admin = db.Column(db.Boolean, nullable=False, default=True)
 
@@ -24,6 +25,7 @@ class User(db.Model):
         """Serializer user to dict"""
 
         return {
+            "id": self.id,
             "email": self.email,
             "isAdmin": self.is_admin,
         }
@@ -35,8 +37,7 @@ class User(db.Model):
         Returns user token.
         """
 
-        hashed_password = bcrypt.generate_password_hash(password)\
-            .decode('UTF-8')
+        hashed_password = bcrypt.generate_password_hash(password).decode("UTF-8")
 
         user = User(
             email=email,
@@ -77,9 +78,9 @@ class Ticket(db.Model):
     client_name = db.Column(db.String(120), nullable=False)
     client_email = db.Column(db.String(200), nullable=False)
     description = db.Column(db.String(1800), nullable=False)
-    status_name = db.Column(db.Text, db.ForeignKey('statuses.status_name'))
+    status_name = db.Column(db.Text, db.ForeignKey("statuses.status_name"))
 
-    status = db.relationship('Status', backref='tickets')
+    status = db.relationship("Status", backref="tickets")
 
     def to_dict(self):
         """Serializer ticket to dict"""
