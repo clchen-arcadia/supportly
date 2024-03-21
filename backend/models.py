@@ -89,7 +89,7 @@ class Ticket(db.Model):
             "clientName": self.client_name,
             "clientEmail": self.client_email,
             "description": self.description,
-            "status": self.status,
+            "statusName": self.status_name,
         }
 
     @classmethod
