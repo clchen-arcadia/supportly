@@ -11,7 +11,7 @@ from flask_cors import CORS
 from werkzeug.datastructures import MultiDict
 from sqlalchemy.exc import IntegrityError
 
-from middleware import ensure_admin
+from middleware import ensure_admin, ensure_logged_in
 from models import db, connect_db, User, Ticket
 from forms import UserLogin, UserSignup, TicketSubmit
 
@@ -19,17 +19,17 @@ from forms import UserLogin, UserSignup, TicketSubmit
 app = Flask(__name__)
 
 cors = CORS(app)
-app.config['CORS_HEADERS'] = 'Content-Type'
+app.config["CORS_HEADERS"] = "Content-Type"
 
 load_dotenv()
 
-app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
-app.config['SQLALCHEMY_DATABASE_URI'] = (
-    os.environ['DATABASE_URL'].replace("postgres://", "postgresql://")
+app.config["SECRET_KEY"] = os.environ["SECRET_KEY"]
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["DATABASE_URL"].replace(
+    "postgres://", "postgresql://"
 )
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_ECHO'] = False
-app.config['WTF_CSRF_ENABLED'] = False
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["SQLALCHEMY_ECHO"] = False
+app.config["WTF_CSRF_ENABLED"] = False
 
 connect_db(app)
 
@@ -40,14 +40,14 @@ def add_user_to_g():
     If logged in, add current user to Flask global.
     """
 
-    if 'token' in request.headers:
-        token = request.headers['token']
+    if "token" in request.headers:
+        token = request.headers["token"]
         try:
             payload = jwt.decode(
                 token,
-                app.config['SECRET_KEY'],
-                algorithms=['HS256'],
-                options={"verify_signature": True}
+                app.config["SECRET_KEY"],
+                algorithms=["HS256"],
+                options={"verify_signature": True},
             )
             g.user = payload
         except jwt.exceptions.InvalidSignatureError as e:
@@ -58,7 +58,7 @@ def add_user_to_g():
         g.user = None
 
 
-@app.route('/signup/', methods=["POST"])
+@app.route("/signup/", methods=["POST"])
 def signup():
     """
     Handle user signup
@@ -79,7 +79,7 @@ def signup():
 
         except IntegrityError as e:
             print("ERR: ", e)
-            return jsonify({'errors': "Email already exists."}), 400
+            return jsonify({"errors": "Email already exists."}), 400
 
         return jsonify({"token": token}), 201
 
@@ -88,10 +88,10 @@ def signup():
         for err in form.errors:
             joined_messages = " ".join(form.errors[err])
             messages.append(f"{err}: {joined_messages}")
-        return jsonify({'errors': messages}), 400
+        return jsonify({"errors": messages}), 400
 
 
-@app.route('/login/', methods=["POST"])
+@app.route("/login/", methods=["POST"])
 def login():
     """
     Handle user login
@@ -107,14 +107,24 @@ def login():
         token = User.login(email, password)
 
         if token:
-            return jsonify({'token': token}), 200
+            return jsonify({"token": token}), 200
         else:
-            return jsonify({'error': 'Invalid username/password'}), 400
+            return jsonify({"error": "Invalid username/password"}), 400
 
     return jsonify(errors=form.errors), 400
 
 
-@app.route('/tickets/', methods=["GET"])
+@app.route("/users/<user_id>", methods=["GET"])
+@ensure_logged_in
+def get_user(user_id):
+    """
+    Get user by id
+    """
+    user = User.query.get_or_404(user_id)
+    return jsonify({'user': user.to_dict()}), 200
+
+
+@app.route("/tickets/", methods=["GET"])
 @ensure_admin
 def get_all_tickets():
     """
@@ -125,10 +135,10 @@ def get_all_tickets():
     for ticket in Ticket.query.all():
         tickets.append(ticket.to_dict())
 
-    return jsonify({'tickets': tickets}), 200
+    return jsonify({"tickets": tickets}), 200
 
 
-@app.route('/tickets/', methods=["POST"])
+@app.route("/tickets/", methods=["POST"])
 def new_ticket():
     """
     Create new ticket
@@ -152,8 +162,8 @@ def new_ticket():
             db.session.commit()
 
         except IntegrityError as e:
-            return jsonify({'errors': e.__repr__()}), 400
+            return jsonify({"errors": e.__repr__()}), 400
 
-        return jsonify({'success': 'New ticket submitted'}), 201
+        return jsonify({"success": "New ticket submitted"}), 201
 
     return jsonify(errors=form.errors), 400
