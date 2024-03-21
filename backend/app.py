@@ -36,7 +36,7 @@ def signup():
     """
     Handle user signup
     """
-    
+
     data = MultiDict(mapping=request.json)
     form = UserSignup(data)
 
