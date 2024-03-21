@@ -26,11 +26,12 @@ app.config['SQLALCHEMY_DATABASE_URI'] = (
 )
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
+app.config['WTF_CSRF_ENABLED'] = False
 
 connect_db(app)
 
 
-@app.route('/tickets', methods=["POST"])
+@app.route('/tickets/', methods=["POST"])
 def new_ticket():
     """
     Create new ticket
@@ -40,9 +41,9 @@ def new_ticket():
     form = TicketSubmit(data)
 
     if form.validate():
-        client_name = form["client_name"]
-        client_email = form["client_email"]
-        description = form["description"]
+        client_name = form.data["name"]
+        client_email = form.data["email"]
+        description = form.data["description"]
 
         try:
             Ticket.create_new_ticket(
