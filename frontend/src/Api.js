@@ -6,11 +6,10 @@ class SupportlyApi {
 
   static async fetchResponse(url, headers) {
     console.debug("API Call:", url, headers);
-    // debugger;
 
     try {
       const response = await fetch(url, headers);
-      return response
+      return response;
     } catch (error) {
       console.error(error);
       throw error;
@@ -61,6 +60,19 @@ class SupportlyApi {
         cache: "no-cache",
       }
     );
+  }
+
+  static async getCurrentUser(id) {
+    const response = await this.fetchResponse(
+      this.baseUrl + `users/${id}/`,
+      {
+        method: "GET",
+        headers: this.getHeaders(),
+        cache: "no-cache",
+      }
+    );
+
+    return response.user;
   }
 }
 
