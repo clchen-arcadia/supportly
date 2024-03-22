@@ -20,6 +20,7 @@ from forms import (
     TicketStatusPatchForm,
     TicketResponseForm,
 )
+from token_helpers import create_token
 
 
 app = Flask(__name__)
@@ -81,14 +82,15 @@ def signup():
         is_admin = form.data["is_admin"]
 
         try:
-            token = User.signup(email, password, is_admin)
+            user = User.signup(email, password, is_admin)
             db.session.commit()
+
+            return jsonify({"token": create_token(user)}), 201
 
         except IntegrityError as e:
             print("ERR: ", e)
             return jsonify({"errors": "Email already exists."}), 400
 
-        return jsonify({"token": token}), 201
 
     else:
         messages = []
@@ -111,10 +113,10 @@ def login():
         email = form.data["email"]
         password = form.data["password"]
 
-        token = User.login(email, password)
+        user = User.login(email, password)
 
-        if token:
-            return jsonify({"token": token}), 200
+        if user:
+            return jsonify({"token": create_token(user)}), 200
         else:
             return jsonify({"error": "Invalid email/password"}), 400
 
