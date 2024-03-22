@@ -9,7 +9,10 @@ class SupportlyApi {
     console.debug("API Call:", endpoint, data, method);
 
     const url = `${this.baseUrl}/${endpoint}`;
-    const headers = { token: this.token };
+    const headers = {
+      'Content-Type': 'application/json',
+      token: this.token,
+    };
 
     const params = (method === 'GET')
       ? data
@@ -39,13 +42,23 @@ class SupportlyApi {
   }
 
   static async getCurrentUser(id) {
-    const res = await this.request(`users/${id}`);
+    const res = await this.request(`users/${id}/`);
     return res.user;
   }
 
   static async getTickets() {
     const res = await this.request(`tickets/`);
     return res.tickets;
+  }
+
+  static async respondToTicket(formData, ticketId) {
+    const res = await this.request(`tickets/${ticketId}/email/`, formData, 'POST');
+    return res.message;
+  }
+
+  static async updateTicket(formData, ticketId) {
+    const res = await this.request(`tickets/${ticketId}/`, formData, 'PATCH');
+    return res.message;
   }
 }
 
