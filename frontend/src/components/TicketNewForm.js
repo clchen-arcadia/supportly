@@ -1,4 +1,4 @@
-import { Box, Button } from '@mui/material';
+import { Box, Button, Alert } from '@mui/material';
 import { useState } from 'react';
 
 
@@ -23,12 +23,13 @@ function validateTicketForm(formData) {
 }
 
 
-function TicketForm({ onSubmit }) {
+function TicketNewForm({ onSubmit }) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     description: '',
   });
+  const [errors, setErrors] = useState("");
 
   function handleChange(evt) {
     const { name, value } = evt.target;
@@ -38,14 +39,13 @@ function TicketForm({ onSubmit }) {
     }));
   }
 
-  function handleSubmit(evt) {
+  async function handleSubmit(evt) {
     evt.preventDefault();
-    const [isValid, warningMessage] = validateTicketForm(formData);
-
-    if (isValid) {
-      onSubmit(formData);
-    } else {
-      alert(warningMessage);
+    try {
+      await onSubmit(formData);
+    } catch (err) {
+      setErrors(err.response.data.errors);
+      console.error("SignupForm errors", err);
     }
   }
 
@@ -135,4 +135,4 @@ function TicketForm({ onSubmit }) {
   );
 }
 
-export default TicketForm;
+export default TicketNewForm;
