@@ -50,7 +50,7 @@ formatter = logging\
     .Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 handler.setFormatter(formatter)
 
-app.logger.setHandler(handler)
+app.logger.addHandler(handler)
 
 
 @app.before_request
