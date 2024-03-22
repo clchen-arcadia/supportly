@@ -49,14 +49,31 @@ function TicketForm({ onSubmit }) {
     }
   }
 
-  const inputStyles = {};
+  const inputStyles = {
+    width: '100%',
+    padding: '7.5px 3px',
+    borderRadius: '4px',
+    border: '1px solid rgb(118, 118, 118)',
+  };
 
   return (
     <form
       onSubmit={handleSubmit}
+      style={{
+        display: 'flex',
+        flexDirection: "column",
+        alignItems: 'center',
+      }}
     >
-      <Box>
-        <Box>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          width: '300px',
+        }}
+      >
+        <Box m={2}>
           <label htmlFor='name'>
             <span style={{ fontWeight: 'bold' }}>
               Name</span><span style={{ color: 'red' }}>*</span>
@@ -72,7 +89,7 @@ function TicketForm({ onSubmit }) {
           </label>
         </Box>
 
-        <Box>
+        <Box m={2}>
           <label htmlFor='email'>
             <span style={{ fontWeight: 'bold' }}>
               Email</span><span style={{ color: 'red' }}>*</span>
@@ -88,7 +105,7 @@ function TicketForm({ onSubmit }) {
           </label>
         </Box>
 
-        <Box>
+        <Box m={2}>
           <label htmlFor='description'>
             <span style={{ fontWeight: 'bold' }}>
               Description</span><span style={{ color: 'red' }}>*</span>
@@ -100,16 +117,19 @@ function TicketForm({ onSubmit }) {
               onChange={handleChange}
               style={inputStyles}
               id='description'
+              rows={5}
             />
           </label>
         </Box>
 
-        <Button
-          variant='contained'
-          type='submit'
-        >
-          Submit Ticket
-        </Button>
+        <Box m={2}>
+          <Button
+            variant='contained'
+            type='submit'
+          >
+            Submit Ticket
+          </Button>
+        </Box>
       </Box>
     </form>
   );
