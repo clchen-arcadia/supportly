@@ -30,9 +30,9 @@ function App() {
       async function getCurrentUser() {
         if (token) {
           try {
-            const { id } = jwtDecode(token);
+            const { userId } = jwtDecode(token);
             SupportlyApi.token = token;
-            const user = await SupportlyApi.getCurrentUser(id);
+            const user = await SupportlyApi.getCurrentUser(userId);
             setCurrentUser({
               infoLoaded: true,
               data: user
