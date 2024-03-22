@@ -10,7 +10,7 @@ function LoginPage({ handleLogin }) {
         textAlign='center'
         sx={{ m: 2 }}
       >
-        Log in to Supportly
+        Log in as Admin to Supportly
       </Typography>
       <LoginForm handleLogin={handleLogin} />
     </>
