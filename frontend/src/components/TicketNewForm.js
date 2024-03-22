@@ -9,7 +9,7 @@ function TicketNewForm() {
     email: '',
     description: '',
   });
-  const [errors, setErrors] = useState("");
+  const [errors, setErrors] = useState([]);
   const [severity, setSeverity] = useState("");
 
   function handleChange(evt) {
@@ -25,7 +25,7 @@ function TicketNewForm() {
     try {
       const message = await SupportlyApi.submitTicket(formData);
       setSeverity("success");
-      setErrors(message);
+      setErrors([message]);
     } catch (err) {
       setSeverity("warning");
       setErrors(err.response.data.errors);
@@ -115,7 +115,7 @@ function TicketNewForm() {
           </Button>
         </Box>
 
-        {errors && <Alert severity={severity}>{errors}</Alert>}
+        {errors && errors.map((e, idx) => (<Alert key={idx} severity={severity}>{e}</Alert>))}
 
       </Box>
     </form>
