@@ -8,6 +8,7 @@ import userContext from './userContext';
 import Navigation from './Navigation';
 import RoutesList from './RoutesList';
 import useLocalStorage from "./useLocalStorage";
+import { Typography } from '@mui/material';
 
 const TOKEN_STORAGE_KEY = "supportly-token";
 
@@ -20,6 +21,7 @@ function App() {
   });
   const [token, setToken] = useLocalStorage(TOKEN_STORAGE_KEY);
 
+  console.debug("App rendered with currentUser=", currentUser, "token=", token);
 
   useEffect(
     function loadUserInfo() {
@@ -27,21 +29,20 @@ function App() {
 
       async function getCurrentUser() {
         if (token) {
-
-          const { userId } = jwtDecode(token);
-          SupportlyApi.token = token;
-          const [success, currentUser] = await SupportlyApi.getCurrentUser(userId);
-          if (success) {
+          try {
+            const { userId } = jwtDecode(token);
+            SupportlyApi.token = token;
+            const user = await SupportlyApi.getCurrentUser(userId);
             setCurrentUser({
               infoLoaded: true,
-              data: currentUser
+              data: user
             });
-          } else {
+          } catch (err) {
+            console.error("error loading user: ", err);
             setCurrentUser({
               infoLoaded: true,
               data: null
             });
-            alert("Problem loading current user");
           }
         } else {
           setCurrentUser({
@@ -55,42 +56,36 @@ function App() {
     [token]
   );
 
-
   async function handleNewTicket(ticketFormData) {
-    const [success, message] = await SupportlyApi.submitTicket(ticketFormData);
+    const res = await SupportlyApi.submitTicket(ticketFormData);
 
-    if (success) {
-      alert(`Success! ${message}`);
-    } else {
-      alert(`Failure! ${message}`);
-    }
   }
 
   async function handleSignup(signupFormData) {
-    const [success, data] = await SupportlyApi.signupUser(signupFormData);
+    const res = await SupportlyApi.signupUser(signupFormData);
 
-    if (success) {
-      setToken(data);
-    } else {
-      alert(`Failed to create user.`);
-    }
   }
 
   async function handleLogin(loginFormData) {
-    const [success, data] = await SupportlyApi.loginUser(loginFormData);
-
-    if (success) {
-      setToken(data);
-    } else {
-      alert(`Failed to log in user.`);
-    }
+    const token = await SupportlyApi.loginUser(loginFormData);
+    setToken(token);
   }
 
   function handleLogout() {
     setToken(() => null);
   }
 
-
+  if (currentUser.infoLoaded === false) {
+    return (
+      <Typography
+        variant="h5"
+        textAlign='center'
+        sx={{ m: 2, mt: 5 }}
+      >
+        Loading...
+      </Typography>
+    );
+  }
 
   return (
     <userContext.Provider value={currentUser}>
@@ -98,7 +93,6 @@ function App() {
         <Navigation
           handleLogout={handleLogout}
         />
-
         <RoutesList
           handleLogin={handleLogin}
           handleSignup={handleSignup}
