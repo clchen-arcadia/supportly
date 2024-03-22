@@ -1,4 +1,6 @@
-import { Drawer, Typography, Box } from '@mui/material';
+import { Typography, Box } from '@mui/material';
+import TicketResponseForm from './TicketResponseForm';
+import TicketUpdateForm from './TicketUpdateForm';
 
 function TicketEditModal({ ticket, closeDrawer }) {
   console.log("TicketEditModal rendered with ticket=", ticket);
@@ -33,6 +35,9 @@ function TicketEditModal({ ticket, closeDrawer }) {
       <Typography>
         You can update the status, or send an email response to the ticket submitter
       </Typography>
+
+      <TicketResponseForm ticketId={ticket.id} />
+      <TicketUpdateForm ticketId={ticket.id} />
     </>
   );
 }
