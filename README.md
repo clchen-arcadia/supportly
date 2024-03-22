@@ -10,6 +10,9 @@ Project is build with a React.js frontend deployed on Netlify, a Flask Python/SQ
 
 ## [Live Demo](https://supportly.netlify.app/)  
 
+Hint: you can login with email: test@test.com, and password: password.  
+Also, you may need to wait a few seconds for the backend to load on first request (basic free tier).  
+
 ![Supportly client homepage](./screenshots/supportly-sc-1.png "Supportly")  
 Supportly client homepage.  
   
