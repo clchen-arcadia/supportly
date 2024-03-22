@@ -56,7 +56,8 @@ def add_user_to_g():
                 options={"verify_signature": True},
             )
             g.user = payload
-        except (jwt.exceptions.InvalidSignatureError, jwt.exceptions.DecodeError) as e:
+        except (jwt.exceptions.InvalidSignatureError,
+                jwt.exceptions.DecodeError) as e:
             print("INVALID SIG, ERR IS", e)
             g.user = None
 
@@ -178,7 +179,12 @@ def new_ticket():
 
         return jsonify({"message": "New ticket submitted"}), 201
 
-    return jsonify(errors=form.errors), 400
+    else:
+        messages = []
+        for err in form.errors:
+            joined_messages = " ".join(form.errors[err])
+            messages.append(f"{err}: {joined_messages}")
+        return jsonify({"errors": messages}), 400
 
 
 @app.route("/tickets/<ticket_id>/", methods=["PATCH"])
