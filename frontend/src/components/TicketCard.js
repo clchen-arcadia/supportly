@@ -20,10 +20,14 @@ function TicketCard({ ticket, onClick }) {
   }
 
   return (
-    <Box>
+    <Box
+      m={2}
+    >
       <Box
         bgcolor={color}
         onClick={onClick}
+        p={2}
+        borderRadius={'4px'}
       >
         <Typography>Ticket status: {ticket.statusName}</Typography>
         <Typography>Client Email: {ticket.clientEmail}</Typography>
