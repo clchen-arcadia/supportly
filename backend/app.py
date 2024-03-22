@@ -246,6 +246,12 @@ def send_ticket_response(ticket_id):
         print("subject: ", f"Regarding ticket: {ticket.id}")
         print("body: ", f"Dear {ticket.client_name}. {response}")
 
+        app.logger.info("SENDING EMAIL")
+        app.logger.info("==========================================")
+        app.logger.info("mailto: ", ticket.client_email)
+        app.logger.info("subject: ", f"Regarding ticket: {ticket.id}")
+        app.logger.info("body: ", f"Dear {ticket.client_name}. {response}")
+
         return jsonify({"message": "Successfully sent response"}), 200
 
     else:
