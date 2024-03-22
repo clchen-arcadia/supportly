@@ -46,9 +46,6 @@ root = logging.getLogger()
 root.setLevel(logging.INFO)
 handler = logging.StreamHandler(sys.stdout)
 handler.setLevel(logging.INFO)
-formatter = logging\
-    .Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-handler.setFormatter(formatter)
 
 app.logger.addHandler(handler)
 
@@ -253,11 +250,17 @@ def send_ticket_response(ticket_id):
     if form.validate():
         response = form.data["response"]
 
-        logging.info("SENDING EMAIL")
-        logging.info("==========================================")
-        logging.info("mailto: ", ticket.client_email)
-        logging.info("subject: ", f"Regarding ticket: {ticket.id}")
-        logging.info("body: ", f"Dear {ticket.client_name}. {response}")
+        print("SENDING EMAIL", flush=True)
+        print("==========================================", flush=True)
+        print("mailto: ", ticket.client_email, flush=True)
+        print("subject: ", f"Regarding ticket: {ticket.id}", flush=True)
+        print("body: ", f"Dear {ticket.client_name}. {response}", flush=True)
+
+        logging.info("SENDING EMAIL", flush=True)
+        logging.info("==========================================", flush=True)
+        logging.info("mailto: ", ticket.client_email, flush=True)
+        logging.info("subject: ", f"Regarding ticket: {ticket.id}", flush=True)
+        logging.info("body: ", f"Dear {ticket.client_name}. {response}", flush=True)
 
         return jsonify({"message": "Successfully sent response"}), 200
 
