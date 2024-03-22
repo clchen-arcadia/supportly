@@ -91,7 +91,6 @@ def signup():
             print("ERR: ", e)
             return jsonify({"errors": "Email already exists."}), 400
 
-
     else:
         messages = []
         for err in form.errors:
