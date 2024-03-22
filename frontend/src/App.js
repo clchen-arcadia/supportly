@@ -57,13 +57,13 @@ function App() {
   );
 
   async function handleNewTicket(ticketFormData) {
-    const res = await SupportlyApi.submitTicket(ticketFormData);
-
+    const message = await SupportlyApi.submitTicket(ticketFormData);
+    return message;
   }
 
   async function handleSignup(signupFormData) {
-    const res = await SupportlyApi.signupUser(signupFormData);
-
+    const token = await SupportlyApi.signupUser(signupFormData);
+    setToken(token);
   }
 
   async function handleLogin(loginFormData) {
@@ -96,6 +96,7 @@ function App() {
         <RoutesList
           handleLogin={handleLogin}
           handleSignup={handleSignup}
+          handleNewTicket={handleNewTicket}
         />
       </BrowserRouter>
     </userContext.Provider>
