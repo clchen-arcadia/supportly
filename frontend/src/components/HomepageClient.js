@@ -7,11 +7,18 @@ function HomepageClient({ handleNewTicket }) {
   return (
     <>
       <Typography
-        textAlign='center'
         variant='h4'
+        textAlign='center'
         sx={{ m: 2 }}
       >
         Welcome to Supportly
+      </Typography>
+
+      <Typography
+        textAlign='center'
+        sx={{ m: 2 }}
+      >
+        As a client, you can submit new tickets to our support staff.
       </Typography>
 
       <Box
