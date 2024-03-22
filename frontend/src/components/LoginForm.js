@@ -26,7 +26,7 @@ function LoginForm({ handleLogin }) {
       await handleLogin(formData);
       navigate("/");
     } catch (err) {
-      setErrors(err.response.data.error);
+      setErrors(err.response.data.errors);
       console.error("LoginForm errors", err);
     }
   }
