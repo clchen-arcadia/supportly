@@ -22,10 +22,9 @@ function TicketResponseForm({ ticketId }) {
     } catch (err) {
       setSeverity("warning");
       setErrors(err.response.data.errors);
-      console.error("LoginForm errors", err);
+      console.error("TicketResponse errors", err);
     }
   }
-
 
   function handleChange(evt) {
     const { name, value } = evt.target;
@@ -50,7 +49,6 @@ function TicketResponseForm({ ticketId }) {
         flexDirection: "column",
         alignItems: 'center',
       }}
-
     >
       <Box
         sx={{
@@ -87,9 +85,7 @@ function TicketResponseForm({ ticketId }) {
         </Box>
 
         {errors && <Alert severity={severity}>{errors}</Alert>}
-
       </Box>
-
 
     </form>
   );

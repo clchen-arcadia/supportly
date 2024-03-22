@@ -2,12 +2,15 @@ import { Box, Button, Alert } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
+
 function SignupForm({ handleSignup }) {
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     is_admin: true,
   });
+
   const [errors, setErrors] = useState("");
 
   const navigate = useNavigate();
@@ -91,16 +94,16 @@ function SignupForm({ handleSignup }) {
           <Button
             variant='contained'
             type='submit'
-
           >
             Signup
           </Button>
         </Box>
 
         {errors && <Alert severity="warning">{errors}</Alert>}
+        
       </Box>
-    </form>
 
+    </form>
   );
 
 }

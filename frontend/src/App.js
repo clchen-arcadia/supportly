@@ -38,7 +38,7 @@ function App() {
               data: user
             });
           } catch (err) {
-            console.error("error loading user: ", err);
+            console.error("Error loading user: ", err);
             setCurrentUser({
               infoLoaded: true,
               data: null
@@ -55,11 +55,6 @@ function App() {
     },
     [token]
   );
-
-  async function handleNewTicket(ticketFormData) {
-    const message = await SupportlyApi.submitTicket(ticketFormData);
-    return message;
-  }
 
   async function handleSignup(signupFormData) {
     const token = await SupportlyApi.signupUser(signupFormData);
@@ -96,7 +91,6 @@ function App() {
         <RoutesList
           handleLogin={handleLogin}
           handleSignup={handleSignup}
-          handleNewTicket={handleNewTicket}
         />
       </BrowserRouter>
     </userContext.Provider>

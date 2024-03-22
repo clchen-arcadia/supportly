@@ -26,10 +26,9 @@ function TicketUpdateForm({ ticketId }) {
     } catch (err) {
       setSeverity("warning");
       setErrors(err.response.data.errors);
-      console.error("LoginForm errors", err);
+      console.error("TicketUpdate errors", err);
     }
   }
-
 
   function handleChange(evt) {
     const { name, value } = evt.target;
@@ -39,7 +38,6 @@ function TicketUpdateForm({ ticketId }) {
     }));
   }
 
-
   return (
     <form
       onSubmit={handleSubmit}
@@ -48,7 +46,6 @@ function TicketUpdateForm({ ticketId }) {
         flexDirection: "column",
         alignItems: 'center',
       }}
-
     >
       <Box
         sx={{
@@ -106,9 +103,7 @@ function TicketUpdateForm({ ticketId }) {
         </Box>
 
         {errors && <Alert severity={severity}>{errors}</Alert>}
-
       </Box>
-
 
     </form>
   );

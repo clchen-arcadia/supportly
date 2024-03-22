@@ -1,35 +1,16 @@
 import { Box, Button, Alert } from '@mui/material';
 import { useState } from 'react';
+import SupportlyApi from '../Api';
 
 
-function validateTicketForm(formData) {
-  let isValid = true;
-  let warningMessage = '';
-
-  const REQUIRED_FIELDS_TUPLES = [
-    ['name', 'Name'],
-    ['email', 'Email'],
-    ['description', 'Ticket description'],
-  ];
-
-  for (const fieldTuple of REQUIRED_FIELDS_TUPLES) {
-    if (formData[[fieldTuple[0]]] === '') {
-      warningMessage += `${fieldTuple[1]} field is required. \n`;
-      isValid = false;
-    }
-  }
-
-  return [isValid, warningMessage];
-}
-
-
-function TicketNewForm({ onSubmit }) {
+function TicketNewForm() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     description: '',
   });
   const [errors, setErrors] = useState("");
+  const [severity, setSeverity] = useState("");
 
   function handleChange(evt) {
     const { name, value } = evt.target;
@@ -42,10 +23,13 @@ function TicketNewForm({ onSubmit }) {
   async function handleSubmit(evt) {
     evt.preventDefault();
     try {
-      await onSubmit(formData);
+      const message = await SupportlyApi.submitTicket(formData);
+      setSeverity("success");
+      setErrors(message);
     } catch (err) {
+      setSeverity("warning");
       setErrors(err.response.data.errors);
-      console.error("SignupForm errors", err);
+      console.error("NewTicketForm errors", err);
     }
   }
 
@@ -130,6 +114,9 @@ function TicketNewForm({ onSubmit }) {
             Submit Ticket
           </Button>
         </Box>
+
+        {errors && <Alert severity={severity}>{errors}</Alert>}
+
       </Box>
     </form>
   );

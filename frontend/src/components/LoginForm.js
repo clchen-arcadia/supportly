@@ -4,10 +4,12 @@ import { useNavigate } from "react-router-dom";
 
 
 function LoginForm({ handleLogin }) {
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
+
   const [errors, setErrors] = useState("");
 
   const navigate = useNavigate();
@@ -97,7 +99,9 @@ function LoginForm({ handleLogin }) {
         </Box>
 
         {errors && <Alert severity="warning">{errors}</Alert>}
+
       </Box>
+
     </form>
   );
 }

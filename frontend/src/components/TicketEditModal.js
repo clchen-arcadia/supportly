@@ -2,8 +2,8 @@ import { Typography, Box } from '@mui/material';
 import TicketResponseForm from './TicketResponseForm';
 import TicketUpdateForm from './TicketUpdateForm';
 
+
 function TicketEditModal({ ticket, closeDrawer }) {
-  console.log("TicketEditModal rendered with ticket=", ticket);
 
   return (
     <>

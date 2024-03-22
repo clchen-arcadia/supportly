@@ -1,6 +1,7 @@
 import { Typography } from "@mui/material";
 import SignupForm from "./SignupForm";
 
+
 function SignupPage({ handleSignup }) {
 
   return (

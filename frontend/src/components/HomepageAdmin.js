@@ -4,6 +4,7 @@ import { Drawer, Typography, Box } from "@mui/material";
 import TicketCard from "./TicketCard";
 import TicketEditModal from "./TicketEditModal";
 
+
 function HomepageAdmin() {
 
   const [pageData, setPageData] = useState({
@@ -13,8 +14,6 @@ function HomepageAdmin() {
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [currTicket, setCurrTicker] = useState(null);
-
-  console.log("HomepageAdmin rendered with", "pageData=", pageData, "drawerOpen=", drawerOpen, "currTicket=", currTicket);
 
   useEffect(
     function loadTicketsOnMount() {
@@ -40,7 +39,6 @@ function HomepageAdmin() {
       setDrawerOpen(true);
     };
   }
-
 
   return (
     <>
@@ -81,6 +79,7 @@ function HomepageAdmin() {
       >
         <TicketEditModal ticket={currTicket} closeDrawer={() => setDrawerOpen(false)} />
       </Drawer>
+
     </>
   );
 }
