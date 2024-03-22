@@ -52,7 +52,7 @@ function TicketUpdateForm({ ticketId }) {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          // width: '300px',
+          width: '100%',
         }}
       >
         <Box m={2}>
@@ -98,7 +98,7 @@ function TicketUpdateForm({ ticketId }) {
             variant='contained'
             type='submit'
           >
-            Submit
+            Submit and Refresh
           </Button>
         </Box>
 

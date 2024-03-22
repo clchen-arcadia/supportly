@@ -55,7 +55,7 @@ function TicketResponseForm({ ticketId }) {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          // width: '300px',
+          width: '100%',
         }}
       >
         <Box m={2}>
