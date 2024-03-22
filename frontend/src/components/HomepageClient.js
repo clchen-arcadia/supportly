@@ -1,4 +1,4 @@
-import TicketForm from "./TicketForm";
+import TicketNewForm from "./TicketNewForm";
 import { Typography, Box } from "@mui/material";
 
 function HomepageClient({ handleNewTicket }) {
@@ -27,7 +27,7 @@ function HomepageClient({ handleNewTicket }) {
           justifyContent: 'center',
         }}
       >
-        <TicketForm
+        <TicketNewForm
           onSubmit={handleNewTicket}
         />
       </Box>
