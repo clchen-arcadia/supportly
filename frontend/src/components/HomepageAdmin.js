@@ -57,7 +57,13 @@ function HomepageAdmin() {
         As an admin, you can view tickets and update their status.
       </Typography>
 
-      <Box>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
         {
           pageData.isLoading
             ? <Typography textAlign='center'>Loading tickets...</Typography>
