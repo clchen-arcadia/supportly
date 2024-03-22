@@ -54,6 +54,15 @@ class TicketStatusPatchForm(FlaskForm):
     """Form for creating a new ticket"""
 
     new_status = StringField(
-        "Name",
+        "New Status",
         validators=[Length(max=20, min=2)],
+    )
+
+
+class TicketResponseForm(FlaskForm):
+    """Form for creating a new ticket"""
+
+    response = StringField(
+        "Response",
+        validators=[Length(max=1800, min=5)],
     )
