@@ -1,5 +1,4 @@
 import os
-import sys
 from dotenv import load_dotenv
 from flask import (
     Flask,
@@ -23,8 +22,6 @@ from forms import (
 )
 from token_helpers import create_token
 
-import logging
-
 app = Flask(__name__)
 
 cors = CORS(app)
@@ -41,13 +38,6 @@ app.config["SQLALCHEMY_ECHO"] = False
 app.config["WTF_CSRF_ENABLED"] = False
 
 connect_db(app)
-
-root = logging.getLogger()
-root.setLevel(logging.INFO)
-handler = logging.StreamHandler(sys.stdout)
-handler.setLevel(logging.INFO)
-
-app.logger.addHandler(handler)
 
 
 @app.before_request
@@ -255,12 +245,6 @@ def send_ticket_response(ticket_id):
         print("mailto: ", ticket.client_email, flush=True)
         print("subject: ", f"Regarding ticket: {ticket.id}", flush=True)
         print("body: ", f"Dear {ticket.client_name}. {response}", flush=True)
-
-        logging.info("SENDING EMAIL", flush=True)
-        logging.info("==========================================", flush=True)
-        logging.info("mailto: ", ticket.client_email, flush=True)
-        logging.info("subject: ", f"Regarding ticket: {ticket.id}", flush=True)
-        logging.info("body: ", f"Dear {ticket.client_name}. {response}", flush=True)
 
         return jsonify({"message": "Successfully sent response"}), 200
 
