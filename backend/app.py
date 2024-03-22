@@ -13,7 +13,13 @@ from sqlalchemy.exc import IntegrityError
 
 from middleware import ensure_admin, ensure_logged_in
 from models import db, connect_db, User, Ticket, Status
-from forms import UserLogin, UserSignup, TicketNewForm, TicketStatusPatchForm
+from forms import (
+    UserLogin,
+    UserSignup,
+    TicketNewForm,
+    TicketStatusPatchForm,
+    TicketResponseForm,
+)
 
 
 app = Flask(__name__)
@@ -119,7 +125,7 @@ def login():
         return jsonify({"errors": messages}), 400
 
 
-@app.route("/users/<user_id>", methods=["GET"])
+@app.route("/users/<user_id>/", methods=["GET"])
 @ensure_logged_in
 def get_user(user_id):
     """
@@ -175,7 +181,7 @@ def new_ticket():
     return jsonify(errors=form.errors), 400
 
 
-@app.route("/tickets/<ticket_id>", methods=["PATCH"])
+@app.route("/tickets/<ticket_id>/", methods=["PATCH"])
 @ensure_admin
 def update_ticket_status(ticket_id):
     """
@@ -203,6 +209,38 @@ def update_ticket_status(ticket_id):
             return jsonify({"errors": e.__repr__()}), 400
 
         return jsonify({"message": "Successfully updated ticket"}), 200
+
+    else:
+        messages = []
+        for err in form.errors:
+            joined_messages = " ".join(form.errors[err])
+            messages.append(f"{err}: {joined_messages}")
+        return jsonify({"errors": messages}), 400
+
+
+@app.route("/tickets/<ticket_id>/email/", methods=["POST"])
+@ensure_admin
+def send_ticket_response(ticket_id):
+    """
+    Simulate sending an email
+    To respond to a ticket
+    """
+
+    ticket = Ticket.query.get_or_404(ticket_id)
+
+    data = MultiDict(mapping=request.json)
+    form = TicketResponseForm(data)
+
+    if form.validate():
+        response = form.data["response"]
+
+        print("SENDING EMAIL")
+        print("==========================================")
+        print("mailto: ", ticket.client_email)
+        print("subject: ", f"Regarding ticket: {ticket.id}")
+        print("body: ", f"Dear {ticket.client_name}. {response}")
+
+        return jsonify({"message": "Successfully sent response"}), 200
 
     else:
         messages = []
