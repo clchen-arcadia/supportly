@@ -1,8 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 
-from token_helpers import create_token
-
 db = SQLAlchemy()
 bcrypt = Bcrypt()
 
@@ -34,10 +32,12 @@ class User(db.Model):
     def signup(cls, email, password, is_admin=True):
         """
         Signup user.
-        Returns user token.
+        Adds to database, waits to commit.
+        Returns user.
         """
 
-        hashed_password = bcrypt.generate_password_hash(password).decode("UTF-8")
+        hashed_password = bcrypt.generate_password_hash(password)\
+            .decode("UTF-8")
 
         user = User(
             email=email,
@@ -46,15 +46,14 @@ class User(db.Model):
         )
 
         db.session.add(user)
-        token = create_token(user)
-
-        return token
+        return user
 
     @classmethod
     def login(cls, email, password):
         """
         Login user.
-        Returns token on success. Returns False on bad email/password.
+        Returns user on success.
+        Returns False on bad email/password.
         """
 
         user = cls.query.filter_by(email=email).first()
@@ -62,7 +61,7 @@ class User(db.Model):
         if user:
             is_auth = bcrypt.check_password_hash(user.password, password)
             if is_auth:
-                return create_token(user)
+                return user
 
         return False
 
