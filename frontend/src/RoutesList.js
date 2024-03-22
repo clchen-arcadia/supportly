@@ -4,9 +4,11 @@ import { useContext } from "react";
 import userContext from "./userContext.js";
 import HomepageAdmin from "./components/HomepageAdmin.js";
 import HomepageClient from "./components/HomepageClient.js";
+import LoginPage from "./components/LoginPage.js";
+import SignupPage from "./components/SignupPage.js";
 
 
-function RoutesList({ handleLogin, handleSignup, handleProfileEdit }) {
+function RoutesList({ handleLogin, handleSignup }) {
   const { data } = useContext(userContext);
   const isLoggedIn = data?.email !== undefined;
   // const isAdmin = data?.isAdmin === true;
@@ -22,6 +24,8 @@ function RoutesList({ handleLogin, handleSignup, handleProfileEdit }) {
           </Routes>
           :
           <Routes>
+            <Route path="/login" element={<LoginPage handleLogin={handleLogin} />} />
+            <Route path="/signup" element={<SignupPage handleSignup={handleSignup} />} />
             <Route path="/" element={<HomepageClient />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
