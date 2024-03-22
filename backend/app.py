@@ -50,7 +50,7 @@ def add_user_to_g():
                 options={"verify_signature": True},
             )
             g.user = payload
-        except jwt.exceptions.InvalidSignatureError as e:
+        except (jwt.exceptions.InvalidSignatureError, jwt.exceptions.DecodeError) as e:
             print("INVALID SIG, ERR IS", e)
             g.user = None
 
