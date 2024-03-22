@@ -109,7 +109,7 @@ def login():
         if token:
             return jsonify({"token": token}), 200
         else:
-            return jsonify({"error": "Invalid username/password"}), 400
+            return jsonify({"error": "Invalid email/password"}), 400
 
     else:
         messages = []
