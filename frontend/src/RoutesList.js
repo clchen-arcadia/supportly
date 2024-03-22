@@ -8,7 +8,7 @@ import LoginPage from "./components/LoginPage.js";
 import SignupPage from "./components/SignupPage.js";
 
 
-function RoutesList({ handleLogin, handleSignup }) {
+function RoutesList({ handleLogin, handleSignup, handleNewTicket }) {
   const { data } = useContext(userContext);
   const isLoggedIn = data?.email !== undefined;
   // const isAdmin = data?.isAdmin === true;
@@ -26,7 +26,7 @@ function RoutesList({ handleLogin, handleSignup }) {
           <Routes>
             <Route path="/login" element={<LoginPage handleLogin={handleLogin} />} />
             <Route path="/signup" element={<SignupPage handleSignup={handleSignup} />} />
-            <Route path="/" element={<HomepageClient />} />
+            <Route path="/" element={<HomepageClient handleNewTicket={handleNewTicket} />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
       }
