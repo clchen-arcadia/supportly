@@ -11,22 +11,29 @@ Project is build with a React.js frontend deployed on Netlify, a Flask Python/SQ
 ## [Live Demo](https://supportly.netlify.app/)  
 
 ![Supportly client homepage](./screenshots/supportly-sc-1.png "Supportly")  
-Supportly client homepage  
+Supportly client homepage.  
+  
 
 ![Supportly client form filled homepage](./screenshots/supportly-sc-2.png "Supportly")  
-Supportly client form filled homepage  
+Supportly client form filled homepage.  
+  
 
 ![Supportly admin homepage with tickets display](./screenshots/supportly-sc-3.png "Supportly")  
-Supportly admin homepage with tickets display  
+Supportly admin homepage with tickets display.  
+  
 
 ![Supportly admin homepage with ticket edit modal](./screenshots/supportly-sc-4.png "Supportly")  
-Supportly admin homepage with ticket edit modal  
+Supportly admin homepage with ticket edit modal.  
+  
 
 ![Supportly admin homepage with form filled ticket edit modal](./screenshots/supportly-sc-5.png "Supportly")  
-Supportly admin homepage with form filled ticket edit modal  
+Supportly admin homepage with form filled ticket edit modal.  
+  
 
 ![Supportly Render backend email logged](./screenshots/supportly-sc-6.png "Supportly")  
-Supportly Render backend email logged  
+Supportly Render backend email logged.  
+  
 
 ![Supportly ElephantSQL database table](./screenshots/supportly-sc-7.png "Supportly")  
-Supportly ElephantSQL database table  
+Supportly ElephantSQL database table.  
+  
