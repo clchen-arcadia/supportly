@@ -26,7 +26,7 @@ function TicketUpdateForm({ ticketId }) {
     } catch (err) {
       setSeverity("warning");
       setErrors(err.response.data.errors);
-      console.error("TicketUpdate errors", err);
+      console.warn("TicketUpdate caught errors", err);
     }
   }
 

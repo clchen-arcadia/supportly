@@ -29,7 +29,7 @@ function TicketNewForm() {
     } catch (err) {
       setSeverity("warning");
       setErrors(err.response.data.errors);
-      console.error("NewTicketForm errors", err);
+      console.warn("NewTicketForm caught errors", err);
     }
   }
 

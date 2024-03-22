@@ -38,7 +38,7 @@ function App() {
               data: user
             });
           } catch (err) {
-            console.error("Error loading user: ", err);
+            console.warn("Caught error loading user: ", err);
             setCurrentUser({
               infoLoaded: true,
               data: null

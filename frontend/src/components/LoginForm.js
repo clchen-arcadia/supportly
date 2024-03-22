@@ -29,7 +29,7 @@ function LoginForm({ handleLogin }) {
       navigate("/");
     } catch (err) {
       setErrors(err.response.data.error);
-      console.error("LoginForm errors", err);
+      console.warn("LoginForm caught errors", err);
     }
   }
 

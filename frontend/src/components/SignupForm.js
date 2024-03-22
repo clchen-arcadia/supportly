@@ -30,7 +30,7 @@ function SignupForm({ handleSignup }) {
       navigate("/");
     } catch (err) {
       setErrors(err.response.data.errors);
-      console.error("SignupForm errors", err);
+      console.warn("SignupForm caught errors", err);
     }
   }
 
@@ -100,7 +100,7 @@ function SignupForm({ handleSignup }) {
         </Box>
 
         {errors && <Alert severity="warning">{errors}</Alert>}
-        
+
       </Box>
 
     </form>

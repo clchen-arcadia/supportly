@@ -22,7 +22,7 @@ class SupportlyApi {
     try {
       return (await axios({ url, method, data, params, headers })).data;
     } catch (error) {
-      console.error("API ERROR: ", error);
+      console.warn("API ERROR CAUGHT: ", error);
       throw error;
     }
   }

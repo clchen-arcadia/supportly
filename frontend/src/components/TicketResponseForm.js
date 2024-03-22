@@ -22,7 +22,7 @@ function TicketResponseForm({ ticketId }) {
     } catch (err) {
       setSeverity("warning");
       setErrors(err.response.data.errors);
-      console.error("TicketResponse errors", err);
+      console.warn("TicketResponse caught errors", err);
     }
   }
 
