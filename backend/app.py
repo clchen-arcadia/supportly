@@ -22,6 +22,7 @@ from forms import (
 )
 from token_helpers import create_token
 
+import logging
 
 app = Flask(__name__)
 
@@ -39,6 +40,8 @@ app.config["SQLALCHEMY_ECHO"] = False
 app.config["WTF_CSRF_ENABLED"] = False
 
 connect_db(app)
+
+root = logging.getLogger("root")
 
 
 @app.before_request
@@ -241,17 +244,11 @@ def send_ticket_response(ticket_id):
     if form.validate():
         response = form.data["response"]
 
-        print("SENDING EMAIL")
-        print("==========================================")
-        print("mailto: ", ticket.client_email)
-        print("subject: ", f"Regarding ticket: {ticket.id}")
-        print("body: ", f"Dear {ticket.client_name}. {response}")
-
-        app.logger.info("SENDING EMAIL")
-        app.logger.info("==========================================")
-        app.logger.info("mailto: ", ticket.client_email)
-        app.logger.info("subject: ", f"Regarding ticket: {ticket.id}")
-        app.logger.info("body: ", f"Dear {ticket.client_name}. {response}")
+        root.info("SENDING EMAIL")
+        root.info("==========================================")
+        root.info("mailto: ", ticket.client_email)
+        root.info("subject: ", f"Regarding ticket: {ticket.id}")
+        root.info("body: ", f"Dear {ticket.client_name}. {response}")
 
         return jsonify({"message": "Successfully sent response"}), 200
 
