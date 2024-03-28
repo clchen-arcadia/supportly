@@ -11,6 +11,7 @@ function TicketNewForm() {
   });
   const [errors, setErrors] = useState([]);
   const [severity, setSeverity] = useState("");
+  const [submitButtonIsDisabled, setSubmitButtonIsDisabled] = useState(false);
 
   function handleChange(evt) {
     const { name, value } = evt.target;
@@ -22,6 +23,7 @@ function TicketNewForm() {
 
   async function handleSubmit(evt) {
     evt.preventDefault();
+    setSubmitButtonIsDisabled(true);
     try {
       const message = await SupportlyApi.submitTicket(formData);
       setSeverity("success");
@@ -31,6 +33,7 @@ function TicketNewForm() {
       setErrors(err.response.data.errors);
       console.warn("NewTicketForm caught errors", err);
     }
+    setSubmitButtonIsDisabled(false);
   }
 
   const inputStyles = {
@@ -110,6 +113,7 @@ function TicketNewForm() {
           <Button
             variant='contained'
             type='submit'
+            disabled={submitButtonIsDisabled}
           >
             Submit Ticket
           </Button>
