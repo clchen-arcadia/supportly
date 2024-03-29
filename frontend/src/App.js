@@ -8,20 +8,21 @@ import userContext from './userContext';
 import Navigation from './Navigation';
 import RoutesList from './RoutesList';
 import useLocalStorage from "./useLocalStorage";
-import { Typography } from '@mui/material';
+
+import LoadingScreen from './components/LoadingScreen';
 
 const TOKEN_STORAGE_KEY = "supportly-token";
 
 
 function App() {
 
-  const [currentUser, setCurrentUser] = useState({
+  const [userData, setUserData] = useState({
     data: null,
     infoLoaded: false
   });
   const [token, setToken] = useLocalStorage(TOKEN_STORAGE_KEY);
 
-  console.debug("App rendered with currentUser=", currentUser, "token=", token);
+  console.debug("App rendered with userData=", userData, "token=", token);
 
   useEffect(
     function loadUserInfo() {
@@ -33,19 +34,19 @@ function App() {
             const { userId } = jwtDecode(token);
             SupportlyApi.token = token;
             const user = await SupportlyApi.getCurrentUser(userId);
-            setCurrentUser({
+            setUserData({
               infoLoaded: true,
               data: user
             });
           } catch (err) {
             console.warn("Caught error loading user: ", err);
-            setCurrentUser({
+            setUserData({
               infoLoaded: true,
               data: null
             });
           }
         } else {
-          setCurrentUser({
+          setUserData({
             infoLoaded: true,
             data: null
           });
@@ -70,20 +71,12 @@ function App() {
     setToken(() => null);
   }
 
-  if (currentUser.infoLoaded === false) {
-    return (
-      <Typography
-        variant="h5"
-        textAlign='center'
-        sx={{ m: 2, mt: 5 }}
-      >
-        Loading...
-      </Typography>
-    );
+  if (userData.infoLoaded === false) {
+    return <LoadingScreen />;
   }
 
   return (
-    <userContext.Provider value={currentUser}>
+    <userContext.Provider value={userData}>
       <BrowserRouter>
         <Navigation
           handleLogout={handleLogout}
