@@ -8,7 +8,21 @@ import { Box } from "@mui/material";
 function Navigation({ handleLogout }) {
   const { data } = useContext(userContext);
   const isLoggedIn = data?.email !== undefined;
-  // const isAdmin = data?.isAdmin === true;
+
+  const navButtons = [];
+
+  if (isLoggedIn) {
+    navButtons.push(
+      <NavLink to="/logout" onClick={handleLogout}>
+        Logout&nbsp;{data?.email}
+      </NavLink>
+    );
+  } else {
+    navButtons.push(
+      <NavLink to="/login">Login</NavLink>,
+      <NavLink to="/signup">Signup</NavLink>
+    );
+  }
 
   return (
     <Box
@@ -17,41 +31,27 @@ function Navigation({ handleLogout }) {
         justifyContent: 'space-between',
       }}
     >
-      <Box
-        m={2}
-      >
+      <Box m={2} >
         <Link to="/">Supportly</Link>
       </Box>
-      {
-        isLoggedIn
-          ?
-          <Box
-            m={2}
-          >
-            <NavLink
-              to="/logout"
-              onClick={handleLogout}
-            >
-              Logout&nbsp;{data?.email}
-            </NavLink>
-          </Box>
-          :
-          <Box
-            m={2}
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-            }}
 
-          >
-            <Box mx={2}>
-              <NavLink to="/login">Login</NavLink>
+
+      <Box
+        m={2}
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}
+      >
+        {
+          navButtons.map((btn, idx) => (
+            <Box m={2} key={idx}>
+              {btn}
             </Box>
-            <Box mx={2}>
-              <NavLink to="/signup">Signup</NavLink>
-            </Box>
-          </Box>
-      }
+          ))
+        }
+      </Box>
+
     </Box>
   );
 }
