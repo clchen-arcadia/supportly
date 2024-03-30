@@ -79,12 +79,10 @@ function App() {
     <userContext.Provider value={userData}>
       <BrowserRouter>
         <Navigation
-          handleLogout={handleLogout}
-        />
+          handleLogout={handleLogout} />
         <RoutesList
           handleLogin={handleLogin}
-          handleSignup={handleSignup}
-        />
+          handleSignup={handleSignup} />
       </BrowserRouter>
     </userContext.Provider>
   );
