@@ -54,7 +54,7 @@ function HomepageAdmin() {
         textAlign='center'
         sx={{ m: 2 }}
       >
-        As an admin, you can view tickets and update their status.
+        As an admin, you can view tickets and click into them to update their status.
       </Typography>
 
       <Box
