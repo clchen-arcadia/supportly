@@ -22,17 +22,26 @@ function TicketCard({ ticket, onClick }) {
   return (
     <Box
       m={2}
+      sx={{
+        width: {
+          xs: '90%',
+          sm: '540px',
+        },
+      }}
     >
       <Box
         bgcolor={color}
         onClick={onClick}
-        p={2}
+        p={{
+          xs: 2,
+          sm: 3,
+        }}
         borderRadius={'4px'}
       >
-        <Typography>Ticket status: {ticket.statusName}</Typography>
-        <Typography>Client Email: {ticket.clientEmail}</Typography>
-        <Typography>Client Name: {ticket.clientName}</Typography>
-        <Typography>Ticket description: {ticket.description}</Typography>
+        <Typography><span style={{ fontWeight: "bold" }}>Ticket status:</span> {ticket.statusName}</Typography>
+        <Typography><span style={{ fontWeight: "bold" }}>Client Name:</span> {ticket.clientName}</Typography>
+        <Typography><span style={{ fontWeight: "bold" }}>Client Email:</span> {ticket.clientEmail}</Typography>
+        <Typography><span style={{ fontWeight: "bold" }}>Ticket description:</span><br />{ticket.description}</Typography>
       </Box>
     </Box>
   );
