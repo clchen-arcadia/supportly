@@ -1,9 +1,10 @@
-import { Box, Button, Alert } from '@mui/material';
+import { Box, Button, Alert, CircularProgress } from '@mui/material';
 import { useState } from 'react';
 import SupportlyApi from '../Api';
 
 
 function TicketNewForm() {
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -11,7 +12,7 @@ function TicketNewForm() {
   });
   const [errors, setErrors] = useState([]);
   const [severity, setSeverity] = useState("");
-  const [submitButtonIsDisabled, setSubmitButtonIsDisabled] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   function handleChange(evt) {
     const { name, value } = evt.target;
@@ -23,17 +24,21 @@ function TicketNewForm() {
 
   async function handleSubmit(evt) {
     evt.preventDefault();
-    setSubmitButtonIsDisabled(true);
+    setIsLoading(true);
     try {
       const message = await SupportlyApi.submitTicket(formData);
       setSeverity("success");
       setErrors([message]);
+      setFormData((formData) => ({
+        ...formData,
+        description: '',
+      }));
     } catch (err) {
       setSeverity("warning");
       setErrors(err.response.data.errors);
       console.warn("NewTicketForm caught errors", err);
     }
-    setSubmitButtonIsDisabled(false);
+    setIsLoading(false);
   }
 
   const inputStyles = {
@@ -60,6 +65,7 @@ function TicketNewForm() {
           width: '300px',
         }}
       >
+
         <Box m={2}>
           <label htmlFor='name'>
             <span style={{ fontWeight: 'bold' }}>
@@ -109,14 +115,22 @@ function TicketNewForm() {
           </label>
         </Box>
 
-        <Box m={2}>
-          <Button
-            variant='contained'
-            type='submit'
-            disabled={submitButtonIsDisabled}
-          >
-            Submit Ticket
-          </Button>
+        <Box
+          m={2}
+          sx={{
+            display: 'flex',
+          }}>
+          <Box>
+            <Button
+              variant='contained'
+              type='submit'
+              disabled={isLoading}
+            >
+              Submit Ticket
+            </Button>
+          </Box>
+
+          {isLoading && <Box mx={2}><CircularProgress /></Box>}
         </Box>
 
         {errors && errors.map((e, idx) => (<Alert key={idx} severity={severity}>{e}</Alert>))}
