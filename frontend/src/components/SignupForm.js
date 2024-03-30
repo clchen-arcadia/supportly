@@ -5,16 +5,15 @@ import { useNavigate } from "react-router-dom";
 
 function SignupForm({ handleSignup }) {
 
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     is_admin: true,
   });
-
   const [errors, setErrors] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
-  const navigate = useNavigate();
 
   function handleChange(evt) {
     const { name, value } = evt.target;
@@ -61,6 +60,7 @@ function SignupForm({ handleSignup }) {
           width: '300px',
         }}
       >
+
         <Box m={2}>
           <label htmlFor='email'>
             <span style={{ fontWeight: 'bold' }}>
@@ -110,13 +110,11 @@ function SignupForm({ handleSignup }) {
           </Box>
 
           {isLoading && <Box mx={2}><CircularProgress /></Box>}
-
         </Box>
 
         {errors && <Alert severity="warning">{errors}</Alert>}
-
+        
       </Box>
-
     </form>
   );
 
