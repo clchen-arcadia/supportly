@@ -5,16 +5,14 @@ import { useNavigate } from "react-router-dom";
 
 function LoginForm({ handleLogin }) {
 
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
-
-  const [isLoading, setIsLoading] = useState(false);
-
   const [errors, setErrors] = useState("");
-
-  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   function handleChange(evt) {
     const { name, value } = evt.target;
@@ -61,6 +59,7 @@ function LoginForm({ handleLogin }) {
           width: '300px',
         }}
       >
+        
         <Box m={2}>
           <label htmlFor='email'>
             <span style={{ fontWeight: 'bold' }}>
@@ -115,7 +114,6 @@ function LoginForm({ handleLogin }) {
         {errors && <Alert severity="warning">{errors}</Alert>}
 
       </Box>
-
     </form>
   );
 }
