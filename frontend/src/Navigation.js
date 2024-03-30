@@ -9,49 +9,68 @@ function Navigation({ handleLogout }) {
   const { data } = useContext(userContext);
   const isLoggedIn = data?.email !== undefined;
 
+  const navButtonStyles = {
+    textDecoration: 'none',
+    color: '#fff',
+    "&:hover": {
+      textDecoration: "underline"
+    },
+  };
+
   const navButtons = [];
 
   if (isLoggedIn) {
     navButtons.push(
-      <NavLink to="/logout" onClick={handleLogout}>
+      <NavLink style={navButtonStyles} to="/logout" onClick={handleLogout}>
         Logout&nbsp;{data?.email}
       </NavLink>
     );
   } else {
     navButtons.push(
-      <NavLink to="/login">Login</NavLink>,
-      <NavLink to="/signup">Signup</NavLink>
+      <NavLink style={navButtonStyles} to="/login">Login</NavLink>,
+      <NavLink style={navButtonStyles} to="/signup">Signup</NavLink>
     );
   }
 
   return (
     <Box
+      p={2}
+      bgcolor={'primary.main'}
       sx={{
         display: 'flex',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
+        color: 'primary.main',
       }}
     >
-      <Box m={2} >
-        <Link to="/">Supportly</Link>
-      </Box>
-
-
       <Box
-        m={2}
         sx={{
           display: 'flex',
           justifyContent: 'space-between',
+          width: '100%',
+          maxWidth: '1200px',
         }}
       >
-        {
-          navButtons.map((btn, idx) => (
-            <Box m={2} key={idx}>
-              {btn}
-            </Box>
-          ))
-        }
-      </Box>
 
+        <Box>
+          <Link style={navButtonStyles} to="/">Supportly</Link>
+        </Box>
+
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}
+        >
+          {
+            navButtons.map((btn, idx) => (
+              <Box mx={1.5} key={idx}>
+                {btn}
+              </Box>
+            ))
+          }
+        </Box>
+
+      </Box>
     </Box>
   );
 }
