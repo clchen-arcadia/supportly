@@ -1,4 +1,4 @@
-import { Typography, Box } from '@mui/material';
+import { Typography, Box, Button } from '@mui/material';
 import TicketResponseForm from './TicketResponseForm';
 import TicketUpdateForm from './TicketUpdateForm';
 
@@ -10,12 +10,20 @@ function TicketEditModal({ ticket, closeDrawer }) {
       <Box
         sx={{
           display: 'flex',
-          justifyContent: 'end'
+          justifyContent: 'center'
         }}
-        onClick={closeDrawer}
-        m={1}
       >
-        Close X
+        <Box
+          p={1.5}
+          sx={{
+            display: 'flex',
+            justifyContent: 'end',
+            width: '100%',
+            maxWidth: '1200px',
+          }}
+        >
+          <Button onClick={closeDrawer}>Close X</Button>
+        </Box>
       </Box>
 
       <Box
@@ -27,22 +35,20 @@ function TicketEditModal({ ticket, closeDrawer }) {
       >
 
         <Box
+          mb={4}
           sx={{
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            width: '40%',
+            width: {
+              xs: '90%',
+              sm: '540px',
+            },
           }}
-          my={3}
-          mx={8}
         >
 
           <Typography>
             <span style={{ fontWeight: "bold" }}>Ticket ID:</span> {ticket.id}
-          </Typography>
-
-          <Typography>
-            <span style={{ fontWeight: "bold" }}>Description:</span> {ticket.description}
           </Typography>
 
           <Typography>
@@ -54,11 +60,20 @@ function TicketEditModal({ ticket, closeDrawer }) {
           </Typography>
 
           <Typography>
+            <span style={{ fontWeight: "bold" }}>Description:</span><br />{ticket.description}
+          </Typography>
+
+          <Typography my={1} mt={2}>
             You can update the status, or send an email response to the ticket submitter
           </Typography>
 
-          <TicketResponseForm ticketId={ticket.id} />
-          <TicketUpdateForm ticketId={ticket.id} />
+          <Box my={1}>
+            <TicketResponseForm ticketId={ticket.id} />
+          </Box>
+
+          <Box my={1}>
+            <TicketUpdateForm ticketId={ticket.id} />
+          </Box>
         </Box>
       </Box>
 
