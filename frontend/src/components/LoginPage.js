@@ -8,9 +8,9 @@ function LoginPage({ handleLogin }) {
       <Typography
         variant="h5"
         textAlign='center'
-        sx={{ m: 2 }}
+        sx={{ m: 2, mt: 4, }}
       >
-        Log in as Admin to Supportly
+        Log in as admin
       </Typography>
       <LoginForm handleLogin={handleLogin} />
     </>
