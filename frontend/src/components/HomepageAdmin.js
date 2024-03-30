@@ -45,7 +45,7 @@ function HomepageAdmin() {
       <Typography
         textAlign='center'
         variant='h4'
-        sx={{ m: 2 }}
+        sx={{ m: 2, mt: 4, }}
       >
         Welcome, Admin, to Supportly
       </Typography>
