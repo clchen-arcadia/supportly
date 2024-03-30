@@ -1,4 +1,4 @@
-import { Box, Button, Alert } from '@mui/material';
+import { Box, Button, Alert, CircularProgress } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
@@ -9,6 +9,8 @@ function LoginForm({ handleLogin }) {
     email: '',
     password: '',
   });
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const [errors, setErrors] = useState("");
 
@@ -24,6 +26,7 @@ function LoginForm({ handleLogin }) {
 
   async function handleSubmit(evt) {
     evt.preventDefault();
+    setIsLoading(true);
     try {
       await handleLogin(formData);
       navigate("/");
@@ -31,6 +34,7 @@ function LoginForm({ handleLogin }) {
       setErrors(err.response.data.error);
       console.warn("LoginForm caught errors", err);
     }
+    setIsLoading(false);
   }
 
   const inputStyles = {
@@ -89,13 +93,23 @@ function LoginForm({ handleLogin }) {
           </label>
         </Box>
 
-        <Box m={2}>
-          <Button
-            variant='contained'
-            type='submit'
-          >
-            Login
-          </Button>
+        <Box
+          m={2}
+          sx={{
+            display: 'flex',
+          }}
+        >
+          <Box>
+            <Button
+              variant='contained'
+              type='submit'
+              disabled={isLoading}
+            >
+              Login
+            </Button>
+          </Box>
+
+          {isLoading && <Box mx={2}><CircularProgress /></Box>}
         </Box>
 
         {errors && <Alert severity="warning">{errors}</Alert>}
