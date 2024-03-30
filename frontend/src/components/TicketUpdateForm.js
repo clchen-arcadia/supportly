@@ -55,7 +55,7 @@ function TicketUpdateForm({ ticketId }) {
           width: '100%',
         }}
       >
-        <Box m={2}>
+        <Box my={1}>
           <label htmlFor='status'>
             <span style={{ fontWeight: 'bold' }}>
               New status</span><span style={{ color: 'red' }}>*</span>
@@ -93,12 +93,12 @@ function TicketUpdateForm({ ticketId }) {
           </label>
         </Box>
 
-        <Box m={2}>
+        <Box my={1}>
           <Button
             variant='contained'
             type='submit'
           >
-            Submit and Refresh
+            Submit
           </Button>
         </Box>
 

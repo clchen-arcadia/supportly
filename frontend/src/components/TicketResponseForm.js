@@ -58,7 +58,7 @@ function TicketResponseForm({ ticketId }) {
           width: '100%',
         }}
       >
-        <Box m={2}>
+        <Box my={1}>
           <label htmlFor='response'>
             <span style={{ fontWeight: 'bold' }}>
               Response</span><span style={{ color: 'red' }}>*</span>
@@ -75,7 +75,7 @@ function TicketResponseForm({ ticketId }) {
           </label>
         </Box>
 
-        <Box m={2}>
+        <Box my={1}>
           <Button
             variant='contained'
             type='submit'
