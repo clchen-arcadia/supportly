@@ -9,7 +9,7 @@ function HomepageClient() {
       <Typography
         variant='h4'
         textAlign='center'
-        sx={{ m: 2 }}
+        sx={{ m: 2, mt: 4 }}
       >
         Welcome to Supportly
       </Typography>
