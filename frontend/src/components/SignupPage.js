@@ -9,9 +9,9 @@ function SignupPage({ handleSignup }) {
       <Typography
         variant="h5"
         textAlign='center'
-        sx={{ m: 2 }}
+        sx={{ m: 2, mt: 4, }}
       >
-        Sign up for an admin account on Supportly
+        Sign up for an admin account
       </Typography>
       <SignupForm handleSignup={handleSignup} />
     </>
