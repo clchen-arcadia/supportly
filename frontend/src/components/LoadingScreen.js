@@ -1,5 +1,6 @@
 import { Typography, CircularProgress, Box } from '@mui/material';
 
+
 function LoadingScreen() {
   return (
     <Box
@@ -16,7 +17,9 @@ function LoadingScreen() {
         variant="h4">
         Loading...
       </Typography>
+
       <CircularProgress mx={2} />
+
     </Box>
   );
 }
