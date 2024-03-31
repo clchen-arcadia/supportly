@@ -55,16 +55,14 @@ function TicketNewForm() {
         display: 'flex',
         flexDirection: "column",
         alignItems: 'center',
-      }}
-    >
+      }}>
       <Box
         sx={{
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
           width: '300px',
-        }}
-      >
+        }}>
 
         <Box m={2}>
           <label htmlFor='name'>
@@ -77,8 +75,7 @@ function TicketNewForm() {
               value={formData.name}
               onChange={handleChange}
               style={inputStyles}
-              id='name'
-            />
+              id='name'/>
           </label>
         </Box>
 
@@ -93,8 +90,7 @@ function TicketNewForm() {
               value={formData.email}
               onChange={handleChange}
               style={inputStyles}
-              id='email'
-            />
+              id='email'/>
           </label>
         </Box>
 
@@ -110,8 +106,7 @@ function TicketNewForm() {
               onChange={handleChange}
               style={inputStyles}
               id='description'
-              rows={5}
-            />
+              rows={5}/>
           </label>
         </Box>
 
@@ -119,18 +114,18 @@ function TicketNewForm() {
           m={2}
           sx={{
             display: 'flex',
+            alignItems: 'center',
           }}>
           <Box>
             <Button
               variant='contained'
               type='submit'
-              disabled={isLoading}
-            >
+              disabled={isLoading}>
               Submit Ticket
             </Button>
           </Box>
 
-          {isLoading && <Box mx={2}><CircularProgress /></Box>}
+          {isLoading && <Box mx={2}><CircularProgress size={'25px'} /></Box>}
         </Box>
 
         {errors && errors.map((e, idx) => (<Alert key={idx} severity={severity}>{e}</Alert>))}
