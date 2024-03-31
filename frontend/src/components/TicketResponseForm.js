@@ -1,6 +1,6 @@
 import { useState } from "react";
 import SupportlyApi from "../Api";
-import { Box, Alert, Button } from "@mui/material";
+import { Box, Alert, Button, CircularProgress } from "@mui/material";
 
 
 function TicketResponseForm({ ticketId }) {
@@ -8,22 +8,28 @@ function TicketResponseForm({ ticketId }) {
   const [formData, setFormData] = useState({
     response: '',
   });
-
   const [errors, setErrors] = useState("");
   const [severity, setSeverity] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   async function handleSubmit(evt) {
     evt.preventDefault();
 
+    setErrors("");
+    setIsLoading(true);
     try {
       const message = await SupportlyApi.respondToTicket(formData, ticketId);
       setSeverity("success");
       setErrors(message);
+      setFormData({
+        response: '',
+      });
     } catch (err) {
       setSeverity("warning");
       setErrors(err.response.data.errors);
       console.warn("TicketResponse caught errors", err);
     }
+    setIsLoading(false);
   }
 
   function handleChange(evt) {
@@ -48,16 +54,15 @@ function TicketResponseForm({ ticketId }) {
         display: 'flex',
         flexDirection: "column",
         alignItems: 'center',
-      }}
-    >
+      }}>
       <Box
         sx={{
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
           width: '100%',
-        }}
-      >
+        }}>
+
         <Box my={1}>
           <label htmlFor='response'>
             <span style={{ fontWeight: 'bold' }}>
@@ -70,23 +75,33 @@ function TicketResponseForm({ ticketId }) {
               onChange={handleChange}
               style={inputStyles}
               id='response'
-              rows={5}
-            />
+              rows={5}/>
           </label>
         </Box>
 
-        <Box my={1}>
-          <Button
-            variant='contained'
-            type='submit'
-          >
-            Respond
-          </Button>
+        <Box
+          my={1}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+          }}>
+          <Box>
+            <Button
+              variant='contained'
+              type='submit'
+              disabled={isLoading}>
+              Respond
+            </Button>
+          </Box>
+
+          {isLoading && <Box mx={2}><CircularProgress size={'25px'} /></Box>}
         </Box>
 
-        {errors && <Alert severity={severity}>{errors}</Alert>}
-      </Box>
+        <Box visibility={errors === "" ? 'hidden' : 'visible'}>
+          <Alert severity={severity}>{errors}</Alert>
+        </Box>
 
+      </Box>
     </form>
   );
 }
