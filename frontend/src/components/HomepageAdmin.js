@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import SupportlyApi from "../Api";
-import { Drawer, Typography, Box } from "@mui/material";
+import { Drawer, Typography, Box, CircularProgress } from "@mui/material";
 import TicketCard from "./TicketCard";
 import TicketEditModal from "./TicketEditModal";
 
@@ -11,13 +11,11 @@ function HomepageAdmin() {
     isLoading: true,
     tickets: [],
   });
-
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [currTicket, setCurrTicker] = useState(null);
+  const [currTicket, setCurrTicket] = useState(null);
 
   useEffect(
     function loadTicketsOnMount() {
-
       async function getAllTickets() {
         const tickets = await SupportlyApi.getTickets();
 
@@ -25,19 +23,32 @@ function HomepageAdmin() {
           isLoading: false,
           tickets: tickets,
         });
-
-
       }
       getAllTickets();
     },
     []
   );
 
-  function onClickTicket(ticket) {
+  function getOnClickTicket(ticket) {
     return () => {
-      setCurrTicker(ticket);
+      setCurrTicket(ticket);
       setDrawerOpen(true);
     };
+  }
+
+  function handleTicketUpdate(ticketId, newStatus) {
+    setPageData((state) => ({
+      ...state,
+      tickets: state.tickets.map((t) => (
+        t.id === ticketId
+          ? { ...t, statusName: newStatus }
+          : { ...t }
+      ))
+    }));
+    setCurrTicket((t) => ({
+      ...t,
+      statusName: newStatus,
+    }));
   }
 
   return (
@@ -45,15 +56,13 @@ function HomepageAdmin() {
       <Typography
         textAlign='center'
         variant='h4'
-        sx={{ m: 2, mt: 4, }}
-      >
+        sx={{ m: 2, mt: 4, }}>
         Welcome, Admin, to Supportly
       </Typography>
 
       <Typography
         textAlign='center'
-        sx={{ m: 2 }}
-      >
+        sx={{ m: 2 }}>
         As an admin, you can view tickets and click into them to update their status.
       </Typography>
 
@@ -62,18 +71,26 @@ function HomepageAdmin() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-        }}
-      >
+        }}>
         {
           pageData.isLoading
-            ? <Typography textAlign='center'>Loading tickets...</Typography>
+            ? <Box
+              m={2}
+              mt={4}
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Typography mx={2} variant="h4">Loading tickets...</Typography>
+              <CircularProgress mx={2} />
+            </Box>
             : pageData.tickets.map(
               (t) => {
                 return <TicketCard
                   key={t.id}
                   ticket={t}
-                  onClick={onClickTicket(t)}
-                />;
+                  onClick={getOnClickTicket(t)}/>;
               })
         }
       </Box>
@@ -81,9 +98,11 @@ function HomepageAdmin() {
       <Drawer
         anchor="bottom"
         open={drawerOpen}
-        onClose={() => setDrawerOpen(false)}
-      >
-        <TicketEditModal ticket={currTicket} closeDrawer={() => setDrawerOpen(false)} />
+        onClose={() => setDrawerOpen(false)}>
+        <TicketEditModal
+          ticket={currTicket}
+          closeDrawer={() => setDrawerOpen(false)}
+          handleTicketUpdate={handleTicketUpdate}/>
       </Drawer>
 
     </>
