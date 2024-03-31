@@ -1,50 +1,29 @@
 import os
 from dotenv import load_dotenv
-from flask import (
-    Flask,
-    request,
-    g,
-    jsonify,
-)
+from flask import Flask, request, g, jsonify
 import jwt
 from flask_cors import CORS
 from werkzeug.datastructures import MultiDict
 from sqlalchemy.exc import IntegrityError
-
 from middleware import ensure_admin, ensure_logged_in
 from models import db, connect_db, User, Ticket, Status
-from forms import (
-    UserLogin,
-    UserSignup,
-    TicketNewForm,
-    TicketStatusPatchForm,
-    TicketResponseForm,
-)
+from forms import UserLogin, UserSignup, TicketNewForm, TicketStatusPatchForm, TicketResponseForm
 from token_helpers import create_token
 
 app = Flask(__name__)
-
 cors = CORS(app)
 app.config["CORS_HEADERS"] = "Content-Type"
-
 load_dotenv()
-
 app.config["SECRET_KEY"] = os.environ["SECRET_KEY"]
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["DATABASE_URL"].replace(
-    "postgres://", "postgresql://"
-)
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["DATABASE_URL"].replace("postgres://", "postgresql://")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ECHO"] = False
 app.config["WTF_CSRF_ENABLED"] = False
-
 connect_db(app)
-
 
 @app.before_request
 def add_user_to_g():
-    """
-    If logged in, add current user to Flask global.
-    """
+    """If logged in, add current user to Flask global."""
 
     if "token" in request.headers:
         token = request.headers["token"]
@@ -64,12 +43,9 @@ def add_user_to_g():
     else:
         g.user = None
 
-
 @app.route("/signup/", methods=["POST"])
 def signup():
-    """
-    Handle user signup
-    """
+    """Handle user signup"""
 
     data = MultiDict(mapping=request.json)
     form = UserSignup(data)
@@ -97,12 +73,9 @@ def signup():
             messages.append(f"{err}: {joined_messages}")
         return jsonify({"errors": messages}), 400
 
-
 @app.route("/login/", methods=["POST"])
 def login():
-    """
-    Handle user login
-    """
+    """Handle user login"""
 
     data = MultiDict(mapping=request.json)
     form = UserLogin(data)
@@ -125,24 +98,17 @@ def login():
             messages.append(f"{err}: {joined_messages}")
         return jsonify({"errors": messages}), 400
 
-
 @app.route("/users/<user_id>/", methods=["GET"])
 @ensure_logged_in
 def get_user(user_id):
-    """
-    Get user by id
-    """
+    """Get user by id"""
     user = User.query.get_or_404(user_id)
     return jsonify({"user": user.to_dict()}), 200
-
 
 @app.route("/tickets/", methods=["GET"])
 @ensure_admin
 def get_all_tickets():
-    """
-    Get all tickets.
-    Returns them by descending id number.
-    """
+    """Get all tickets by descending id number"""
 
     tickets = []
     for ticket in Ticket.query.order_by(Ticket.id.desc()).all():
@@ -150,12 +116,9 @@ def get_all_tickets():
 
     return jsonify({"tickets": tickets}), 200
 
-
 @app.route("/tickets/", methods=["POST"])
 def new_ticket():
-    """
-    Create new ticket
-    """
+    """Create new ticket"""
 
     data = MultiDict(mapping=request.json)
     form = TicketNewForm(data)
@@ -186,13 +149,10 @@ def new_ticket():
             messages.append(f"{err}: {joined_messages}")
         return jsonify({"errors": messages}), 400
 
-
 @app.route("/tickets/<ticket_id>/", methods=["PATCH"])
 @ensure_admin
 def update_ticket_status(ticket_id):
-    """
-    Update ticket status
-    """
+    """Update ticket status"""
 
     ticket = Ticket.query.get_or_404(ticket_id)
 
@@ -223,14 +183,10 @@ def update_ticket_status(ticket_id):
             messages.append(f"{err}: {joined_messages}")
         return jsonify({"errors": messages}), 400
 
-
 @app.route("/tickets/<ticket_id>/email/", methods=["POST"])
 @ensure_admin
 def send_ticket_response(ticket_id):
-    """
-    Simulate sending an email
-    To respond to a ticket
-    """
+    """Simulate sending an email to respond to a ticket"""
 
     ticket = Ticket.query.get_or_404(ticket_id)
 
