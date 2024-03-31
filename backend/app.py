@@ -5,8 +5,8 @@ import jwt
 from flask_cors import CORS
 from models import connect_db
 
-import backend.routes.auth as auth
-import backend.routes.tickets as tickets
+import routes.auth as auth
+import routes.tickets as tickets
 
 app = Flask(__name__)
 cors = CORS(app)
