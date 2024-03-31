@@ -9,15 +9,13 @@ function HomepageClient() {
       <Typography
         variant='h4'
         textAlign='center'
-        sx={{ m: 2, mt: 4 }}
-      >
+        sx={{ m: 2, mt: 4 }}>
         Welcome to Supportly
       </Typography>
 
       <Typography
         textAlign='center'
-        sx={{ m: 2 }}
-      >
+        sx={{ m: 2 }}>
         As a client, you can submit new tickets to our support staff.
       </Typography>
 
@@ -25,8 +23,7 @@ function HomepageClient() {
         sx={{
           display: 'flex',
           justifyContent: 'center',
-        }}
-      >
+        }}>
         <TicketNewForm />
       </Box>
     </>
