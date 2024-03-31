@@ -1,9 +1,10 @@
 import axios from "axios";
 
+export const TOKEN_STORAGE_KEY = 'supportly-token';
 
 class SupportlyApi {
 
-  static token = localStorage.getItem("supportly-token");
+  static token = localStorage.getItem(TOKEN_STORAGE_KEY);
   static baseUrl = process.env.REACT_APP_BASE_API_URL || "http://localhost:5001";
 
   static async request(endpoint, data = {}, method = 'GET') {
