@@ -29,12 +29,12 @@ class SupportlyApi {
   }
 
   static async signupUser(signupFormData) {
-    const res = await this.request(`signup/`, signupFormData, 'POST');
+    const res = await this.request(`auth/signup/`, signupFormData, 'POST');
     return res.token;
   }
 
   static async loginUser(loginFormData) {
-    const res = await this.request(`login/`, loginFormData, 'POST');
+    const res = await this.request(`auth/login/`, loginFormData, 'POST');
     return res.token;
   }
 
@@ -44,7 +44,7 @@ class SupportlyApi {
   }
 
   static async getCurrentUser(id) {
-    const res = await this.request(`users/${id}/`);
+    const res = await this.request(`auth/users/${id}/`);
     return res.user;
   }
 
