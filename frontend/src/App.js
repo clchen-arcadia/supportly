@@ -3,15 +3,13 @@ import { BrowserRouter } from 'react-router-dom';
 
 import { jwtDecode } from "jwt-decode";
 
-import SupportlyApi from "./Api";
+import SupportlyApi, { TOKEN_STORAGE_KEY } from "./Api";
 import userContext from './userContext';
 import Navigation from './Navigation';
 import RoutesList from './RoutesList';
 import useLocalStorage from "./useLocalStorage";
 
 import LoadingScreen from './components/LoadingScreen';
-
-const TOKEN_STORAGE_KEY = "supportly-token";
 
 
 function App() {
