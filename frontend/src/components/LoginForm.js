@@ -49,17 +49,15 @@ function LoginForm({ handleLogin }) {
         display: 'flex',
         flexDirection: "column",
         alignItems: 'center',
-      }}
-    >
+      }}>
       <Box
         sx={{
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
           width: '300px',
-        }}
-      >
-        
+        }}>
+
         <Box m={2}>
           <label htmlFor='email'>
             <span style={{ fontWeight: 'bold' }}>
@@ -71,8 +69,7 @@ function LoginForm({ handleLogin }) {
               value={formData.email}
               onChange={handleChange}
               style={inputStyles}
-              id='email'
-            />
+              id='email'/>
           </label>
         </Box>
 
@@ -87,8 +84,7 @@ function LoginForm({ handleLogin }) {
               value={formData.password}
               onChange={handleChange}
               style={inputStyles}
-              id='password'
-            />
+              id='password'/>
           </label>
         </Box>
 
@@ -96,19 +92,18 @@ function LoginForm({ handleLogin }) {
           m={2}
           sx={{
             display: 'flex',
-          }}
-        >
+            alignItems: 'center',
+          }}>
           <Box>
             <Button
               variant='contained'
               type='submit'
-              disabled={isLoading}
-            >
+              disabled={isLoading}>
               Login
             </Button>
           </Box>
 
-          {isLoading && <Box mx={2}><CircularProgress /></Box>}
+          {isLoading && <Box mx={2}><CircularProgress size={'25px'} /></Box>}
         </Box>
 
         {errors && <Alert severity="warning">{errors}</Alert>}
