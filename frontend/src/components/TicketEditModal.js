@@ -1,9 +1,10 @@
 import { Typography, Box, Button } from '@mui/material';
 import TicketResponseForm from './TicketResponseForm';
 import TicketUpdateForm from './TicketUpdateForm';
+import { TICKET_STATUS_KEYS } from './TicketCard';
 
 
-function TicketEditModal({ ticket, closeDrawer }) {
+function TicketEditModal({ ticket, closeDrawer, handleTicketUpdate }) {
 
   return (
     <>
@@ -11,8 +12,7 @@ function TicketEditModal({ ticket, closeDrawer }) {
         sx={{
           display: 'flex',
           justifyContent: 'center'
-        }}
-      >
+        }}>
         <Box
           p={1.5}
           sx={{
@@ -20,8 +20,7 @@ function TicketEditModal({ ticket, closeDrawer }) {
             justifyContent: 'end',
             width: '100%',
             maxWidth: '1200px',
-          }}
-        >
+          }}>
           <Button onClick={closeDrawer}>Close X</Button>
         </Box>
       </Box>
@@ -31,9 +30,7 @@ function TicketEditModal({ ticket, closeDrawer }) {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-        }}
-      >
-
+        }}>
         <Box
           mb={4}
           sx={{
@@ -44,11 +41,14 @@ function TicketEditModal({ ticket, closeDrawer }) {
               xs: '90%',
               sm: '540px',
             },
-          }}
-        >
+          }}>
 
           <Typography>
             <span style={{ fontWeight: "bold" }}>Ticket ID:</span> {ticket.id}
+          </Typography>
+
+          <Typography>
+            <span style={{ fontWeight: "bold" }}>Ticket Status:</span> {TICKET_STATUS_KEYS[ticket.statusName]}
           </Typography>
 
           <Typography>
@@ -72,13 +72,11 @@ function TicketEditModal({ ticket, closeDrawer }) {
           </Box>
 
           <Box my={1}>
-            <TicketUpdateForm ticketId={ticket.id} />
+            <TicketUpdateForm ticketId={ticket.id} handleTicketUpdate={handleTicketUpdate} />
           </Box>
+
         </Box>
       </Box>
-
-
-
     </>
   );
 }
