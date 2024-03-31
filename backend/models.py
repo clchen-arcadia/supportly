@@ -8,9 +8,7 @@ TICKET_INITIAL_STATUS = "new"
 
 
 class User(db.Model):
-    """
-    User class.
-    """
+    """User class"""
 
     __tablename__ = "users"
 
@@ -38,13 +36,11 @@ class User(db.Model):
 
         hashed_password = bcrypt.generate_password_hash(password)\
             .decode("UTF-8")
-
         user = User(
             email=email,
             password=hashed_password,
             is_admin=is_admin,
         )
-
         db.session.add(user)
         return user
 
@@ -57,19 +53,15 @@ class User(db.Model):
         """
 
         user = cls.query.filter_by(email=email).first()
-
         if user:
             is_auth = bcrypt.check_password_hash(user.password, password)
             if is_auth:
                 return user
-
         return False
 
 
 class Ticket(db.Model):
-    """
-    Support ticket class.
-    """
+    """Support ticket class"""
 
     __tablename__ = "tickets"
 
@@ -78,7 +70,6 @@ class Ticket(db.Model):
     client_email = db.Column(db.String(200), nullable=False)
     description = db.Column(db.String(1800), nullable=False)
     status_name = db.Column(db.Text, db.ForeignKey("statuses.status_name"))
-
     status = db.relationship("Status", backref="tickets")
 
     def to_dict(self):
@@ -100,25 +91,21 @@ class Ticket(db.Model):
             description=description,
             status_name=TICKET_INITIAL_STATUS,
         )
-
         db.session.add(ticket)
         return ticket
 
 
 class Status(db.Model):
-    """
-    Status class for Tickets
-    """
+    """Status class for Tickets"""
 
     __tablename__ = "statuses"
+    
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     status_name = db.Column(db.String(120), nullable=False, unique=True)
 
 
 def connect_db(app):
-    """
-    Connect Flask app to the database.
-    """
+    """Connect Flask app to the database"""
 
     app.app_context().push()
     db.app = app
