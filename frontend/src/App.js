@@ -14,10 +14,7 @@ import LoadingScreen from './components/LoadingScreen';
 
 function App() {
 
-  const [userData, setUserData] = useState({
-    data: null,
-    infoLoaded: false
-  });
+  const [userData, setUserData] = useState({ data: null, infoLoaded: false });
   const [token, setToken] = useLocalStorage(TOKEN_STORAGE_KEY);
 
   console.debug("App rendered with userData=", userData, "token=", token);
@@ -32,22 +29,13 @@ function App() {
             const { userId } = jwtDecode(token);
             SupportlyApi.token = token;
             const user = await SupportlyApi.getCurrentUser(userId);
-            setUserData({
-              infoLoaded: true,
-              data: user
-            });
+            setUserData({ infoLoaded: true, data: user });
           } catch (err) {
             console.warn("Caught error loading user: ", err);
-            setUserData({
-              infoLoaded: true,
-              data: null
-            });
+            setUserData({ infoLoaded: true, data: null });
           }
         } else {
-          setUserData({
-            infoLoaded: true,
-            data: null
-          });
+          setUserData({ infoLoaded: true, data: null });
         }
       }
       getCurrentUser();
