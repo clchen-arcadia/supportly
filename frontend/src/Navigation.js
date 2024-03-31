@@ -40,16 +40,14 @@ function Navigation({ handleLogout }) {
         display: 'flex',
         justifyContent: 'center',
         color: 'primary.main',
-      }}
-    >
+      }}>
       <Box
         sx={{
           display: 'flex',
           justifyContent: 'space-between',
           width: '100%',
           maxWidth: '1200px',
-        }}
-      >
+        }}>
 
         <Box>
           <Link style={navButtonStyles} to="/">Supportly</Link>
@@ -59,8 +57,7 @@ function Navigation({ handleLogout }) {
           sx={{
             display: 'flex',
             justifyContent: 'space-between',
-          }}
-        >
+          }}>
           {
             navButtons.map((btn, idx) => (
               <Box mx={1.5} key={idx}>
