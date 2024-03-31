@@ -82,7 +82,7 @@ function HomepageAdmin() {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-              <Typography mx={2} variant="h4">Loading tickets...</Typography>
+              <Typography mx={2} variant="h5">Loading tickets...</Typography>
               <CircularProgress mx={2} />
             </Box>
             : pageData.tickets.map(

@@ -14,8 +14,8 @@ function LoadingScreen() {
 
       <Typography
         mx={2}
-        variant="h4">
-        Loading...
+        variant={"h5"}>
+        Loading Supportly...
       </Typography>
 
       <CircularProgress mx={2} />
