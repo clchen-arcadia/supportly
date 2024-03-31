@@ -6,6 +6,7 @@ function SignupPage({ handleSignup }) {
 
   return (
     <>
+
       <Typography
         variant="h5"
         textAlign='center'
@@ -13,7 +14,9 @@ function SignupPage({ handleSignup }) {
       >
         Sign up for an admin account
       </Typography>
+
       <SignupForm handleSignup={handleSignup} />
+
     </>
   );
 }
