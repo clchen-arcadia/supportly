@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from werkzeug.datastructures import MultiDict
 from forms import UserLogin, UserSignup
-from models import db, User
+from models import User
 from middleware import ensure_logged_in
 from services import get_form_errors
 from controllers import signup_new_user, login_user
