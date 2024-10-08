@@ -8,8 +8,8 @@ function LoginForm({ handleLogin }) {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: 'test@test.com',
+    password: 'password',
   });
   const [errors, setErrors] = useState("");
   const [isLoading, setIsLoading] = useState(false);
